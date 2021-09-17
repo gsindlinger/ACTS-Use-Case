@@ -284,3 +284,7 @@ Software/
 # Mp4-files
 
 *.mp4
+
+# Keep the relevant pdf files
+!Latex/Gliederung/file.pdf
+
