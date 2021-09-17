@@ -9,5 +9,5 @@ jobs:
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v2
         with:
-          root_file: Paper/Gliederung/file.tex
+          root_file: Latex/Gliederung/file.tex
 
