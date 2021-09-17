@@ -10,8 +10,6 @@ jobs:
         uses: xu-cheng/latex-action@v2
         with:
           root_file: Latex/Gliederung/testfile.tex
-      - uses: actions/upload-artifact@v2
-        with:
-          name: PDF
-          path: testfile.pdf
+          working_directory: Latex/Gliederung
+
 
