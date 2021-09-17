@@ -1,0 +1,356 @@
+\chapter{Mathematische Modellierung}\label{chap:modell}
+
+In diesem Kapitel wird die grundlegende Konzeption des Modells zur Berechnung des Entnahmeplans der Anlage vorgestellt, welche von Dr. Stefan Graf vom Institut von Finanz- und Aktuarwissenschaften entwickelt wurde. Zunächst werden alle notwendigen Begriffe und Variablen erläutert, die für die Kalkulationen notwendig sind. Anschließend wird basierend auf den beschriebenen Variablen die Modellierung des Entnahmeprozesses ausführlich erläutert. Dieser Abschnitt untergliedert sich in die Beschreibung der Wertentwicklung der Geldanlage im Allgemeinen, der Berechnung der idealen Entnahme und abschließend mit der konkreten Ermittlung der Wertentwicklung im deterministischen und im zufälligen Fall. Insbesondere der zufällige Fall erfordert eine genauere Betrachtung: Hier werden die grundlegenden Zusammenhänge des zugehörigen stochastisches Prozesses und des Black-Scholes-Modells in Verbindung mit der vorliegenden Problematik erklärt. Abschließend wird erläutert, weshalb mehrere Simulationen des Modells benötigt werden, um die Ausgangsfragestellung (vgl. Abschnitt \ref{sec:motivation}) in vernünftiger Art und Weise beantworten zu können.
+
+
+\section{Variablen \& Begriffe}\label{sec:variablen}
+
+Die im Rahmen dieser Arbeit entwickelte digitale Anwendung soll ein hohes Maß an Benutzerfreundlichkeit bieten. Dementsprechend sollte ein Großteil der verwendeten Parameter im Modell variabel sein, sodass der Endnutzer viel Freiraum in der Benutzung erhält. Diese  werden schließlich benutzt, um mit weiteren berechneten Variablen und vorgegebene Konstanten das Modell zu entwickeln, welche den Entnahmeplan einer möglichen Entnahme beschreibt. Diese Variablen werden im Folgenden erläutert.
+
+Vorausgesetzt wird zunächst eine \textit{Kapitalanlage} $A_0 ~ (\in \R_+)$, welche den vorhandenen Betrag zu Beginn der Entnahme beschreibt. Dieser dient dann als Basis für eine \textit{periodische Entnahme} $e ~ (\in (0,A_0])$ in den folgenden Jahren. In diesem Modell gilt, dass eine Periode einem Jahr entspricht.
+
+Konkret bedeutet dies, dass von Beginn des Entnahmealters an jährlich ein gewisser Betrag vom verbleibenden Wert der Kapitalanlage entnommen wird. Dabei soll die Entnahme immer zu Beginn eines Jahres erfolgen. Der verbleibende Betrag wird in auf nicht näher bestimmte Art und Weise bis zur nächsten Entnahme investiert. Dieser Vorgang wird wiederholt, bis das gesamte Kapital aufgebraucht ist.
+
+Unmittelbar im Zusammenhang mit dieser Modellierung stehen die beiden Alterskenngrößen zu Beginn und zum Ende der Entnahme: Das \textit{Alter zu Beginn der Entnahme} $x_0$ beschreibt das Alter zu Beginn des Prozesses, das \textit{Alter am Ende der Entnahme} $x_e$ dementsprechend das Alter, in welchem die angesparten Mittel aufgebraucht sein sollen. Dies bedeutet, dass zu Beginn des Jahres, in welchem die betroffene Person $x_e-1$ Jahre alt ist und folglich innerhalb des Jahres $x_e$ Jahre alt wird, die letzte Entnahme $e$ erfolgt. Die \textit{planmäßige Laufzeit der Entnahme} $T$ (in Jahren) ergibt sich dann aus der Differenz des gewählten Alters am Ende der Entnahme und des Alters zu Beginn der Entnahme: 
+\[T = x_e - x_0
+\]
+
+Wenn die betroffene Person das Alter $x_0$ erreicht, beginnt die Modellierung in dem Kontext dieser Arbeit zum Zeitpunkt des Beginns des folgenden Jahres (bspw. 1. Januar). Dieser Zeitpunkt wird als $t=0$ bezeichnet. Der Anfang der folgenden Jahre (bspw. 1. Januar) wird schließlich mit $t=1,2, \cdots$ charakterisiert. Im Zeitraum $(t-1,t] ~ (t \in \N)$ (also das Jahr, in welchem die betroffene Person $x_0 + t$ Jahre alt wird) wird der Betrag investiert und erzielt dementsprechend zum Zeitpunkt $t$ eine \textit{Rendite} $\rd{t}$. Folglich ändert sich der \textit{Wert der Kapitalanlage} abhängig von der erzielten Rendite $\rd{t}$. Jener Wert der Kapitalanlage wird dann durch die Variable $A_t$ beschrieben. Dabei soll $A_t$ den Wert der Anlage unmittelbar vor der Entnahme $e$ zum Zeitpunkt $t$ darstellen.
+
+Im Falle von $t=1$ bedeutet dies, dass $A_1$ gleich dem Wert der Anlage am Ende des ersten Jahres nach dem Beginn der Entnahme ist, die betroffene Person wäre demnach dann $x_0 + 1$ Jahre alt. Abbildung \ref{fig:Zeitstrahl} veranschaulicht den Entnahmeprozess anhand eines einfachen Beispiels.
+
+\begin{figure}
+	\includegraphics[width=\linewidth]{images/Zeitstrahl}
+	\caption{Beispielhafter Prozess der Entnahme: Bei einer Laufzeit von $T=$ 4 Jahren wird die Entwicklung der Kapitalanlage $A_0$ dargestellt. Im vierten Jahr erfolgt zu Beginn des Jahres die Entnahme, sodass dort die Geldanlage bereits aufgebraucht ist.}
+	\label{fig:Zeitstrahl}
+\end{figure}
+
+\begin{tcolorbox}
+	\underline{Zusammenfassung der Variablen des Modells:}
+	\begin{itemize}
+		\item $A_0 = $ Wert einer Kapitalanlage zu Beginn der Entnahme, $A_0 \in \R_+$
+		\item $e = $ Wert der jährlichen Entnahme, $e \in \R_+$
+		\item $x_0 = $ Alter zu Beginn der Entnahme
+		\item $x_e = $ Alter am Ende der Entnahme
+		\item $T = $ Angestrebte Laufzeit der Entnahme (in Jahren)
+		\item $A_t = $ Verbleibender Wert der Kapitalanlage zum Zeitpunkt $t \in \N$ unmittelbar vor der Entnahme $e$ ($\widehat{=}$ Anfang des Jahres $x_0 + t$)
+		\item $\rd{t} =$ Rendite der Kapitalanlage im Zeitraum $(t-1,t], ~ t \in \N, ~ \rd{t} \in (-1,\infty)$, ($\widehat{=}$ Betroffene Person wird in diesem Jahr $x_0 + t$ Jahre alt)
+	\end{itemize}
+\end{tcolorbox}
+
+\section{Entnahmemodell}\label{sec:Entnahmemodell}
+Die verschiedenen Variablen nehmen auf unterschiedliche Art und Weise Einfluss auf die Ausprägung des Modells und folglich das Ergebnis. Zunächst soll das grundlegende Konzept der Berechnung des Modells erläutert werden. Dieses bildet die Grundlage zur Ermittlung der optimalen jährlichen Entnahme. Dies wiederum wird benötigt, um letztlich die Modellierung der Kapitalanlage im deterministischen wie im zufälligen Fall zu beschreiben.
+
+\subsection{Allgemeine Wertentwicklung}\label{subsec:AllgWertentwicklung}
+
+Vorerst wird die jährliche Rendite $\rd{t}$ unabhängig davon betrachtet, ob diese durch einen zufälligen Prozess entsteht, oder deterministisch vorgegeben ist. Grundsätzlich wird angenommen, dass sich der Wert $A_{t+1}$ der Anlage zum Zeitpunkt $t+1$ aus dem vorgehenden Wert $A_t$ ergibt, indem die Entnahme $e$ von $A_t$ abgezogen wird und der verbleibende Wert mit der Rendite $\rd{t+1}$ aus dem Zeitraum $(t,t+1]$ verrechnet wird. Je nachdem, ob die Rendite positiv oder negativ ausfällt, kann sich der Wert der Kapitalanlage innerhalb eines Jahres erhöhen oder auch vermindern. Es ergibt ergibt sich für alle $t \in \N_0$:
+\begin{align}\label{eq:iteration}
+A_{t+1} = (A_{t} - e) \cdot (1 + \rd{t+1})
+\end{align}
+
+\subsection{Berechnung einer sinnvollen jährlichen Entnahme}\label{subsec:BerechnungRente}
+Eine der großen Herausforderungen des Modells ist die Bestimmung einer sinnvollen periodischen Entnahme. In einem deterministischen Szenario ergibt sich diese aus den jährlichen Renditen $\rd{t}$ und der planmäßigen Laufzeit $T$. Die Entnahme sollte idealerweise bis zum Ende der Laufzeit aufgebraucht sein, also zum Zeitpunkt $t = T-1$ sollte nach der Entnahme der Wert der Kapitalanlage vollständig aufgebraucht sein. Dementsprechend sollte für eine sinnvolle Entnahme $e^{*}$ gelten:
+\[A_{T-1} - e^{*} = 0\] 
+
+Dieses Nullstellenproblem lässt sich in Abhängigkeit von dem Anfangskapital $K_0$ und den Renditen $\rd{t}$ in den meisten Fällen lösen. Denn es gilt:
+\begin{align}\label{eq:NullstelleAllg}
+0 &= A_T  \notag\\
+&= A_{T-1} - e^{*} \notag\\
+&= \left( (A_{T-2} - e^{*}) \cdot (1 + \rd{T-1}) \right) - e \notag\\
+&= \cdots \notag\\
+&= \left( [ \cdots ([(A_0 - e^{*}) \cdot (1 + \rd{1})] - e^{*} \cdot (1 + \rd{2})) \cdots - e^{*} \cdot (1 + \rd{T-1}) ] - e^{*} \right) 
+\end{align}
+
+In diesem Modell wird nun zur Bestimmung eines Vorschlags für die Entnahme $e^{*}$ von einer deterministischen Wertentwicklung ausgegangen. Konkret bedeutet dies, dass die jährlichen Renditen $\rd{t}$ einem konstanten Wert $r \in (-1,\infty)$ zugeordnet werden, der dann für die Berechnung von $e^{*}$ herangezogen wird.
+
+Alternativ ließe sich diese Vorgehensweise auch insofern interpretieren, dass der Wert $r$ die durchschnittliche Rendite über die Laufzeit $T$ darstellt und sich dementsprechend die jährliche Entnahme anhand dieses Durchschnittswertes berechnet wird. Dies erscheint sinnvoll, da es unmöglich ist die exakten Renditen der Anlage in der Zukunft vorherzusagen und somit ein Durchschnittswert eine geschickte Lösung bietet. 
+
+Unter dieser Prämisse verbleibt die Entnahme $e^{*}$ als einzige unbekannte Variable dieser Gleichung. Somit ergibt sich aus Gleichung \ref{eq:NullstelleAllg} folgendes Nullstellenproblem:
+\[f(e^{*}) = 0 ~ \textrm{ mit }\]
+\vspace{-1.5cm}\begin{align}\label{eq:NullstelleSpezial}	
+f(e^{*}) = \left( [ \cdots ([(A_0 - e^{*}) \cdot (1 + r)] - e^{*} \cdot (1 + r) \cdots - e^{*} \cdot (1 + r) ] - e^{*} \right)
+\end{align}
+
+%Unter der Voraussetzung, dass $T > 0$ und $r_t \in (-1,0.5) ~ \forall t \in (0,T)$ ergibt sich für $e$ stets eine Lösung.
+Die Funktion $f$ ist linear in $e^{*}$ und somit stets eindeutig lösbar. Die Berechnung der Lösung erfolgt geschickterweise unter Ausnutzung der Linearität der Funktion $f$. Man wählt zwei mögliche Werte für die Entnahme $e^{*}$ (bspw. $e^{*} = 0$ und $e^{*}=A_0$) und berechnet damit die Funktionswerte $f(e^{*})$ anhand der Vorschrift \ref{eq:NullstelleSpezial}. Die zwei Funktionswerte können wiederum verwendet werden, um die Funktionsvorschrift \ref{eq:NullstelleSpezial} in eine einfachere Darstellung
+\[f(e^{*}) = m \cdot e^{*} + c\] umzuwandeln. Nun kann die Nullstelle leicht bestimmt werden.
+
+Betrachtet man den kompletten Prozess der Entwicklung der Entnahmeentnahme ohne Berücksichtigung einer möglichen marktbedingten Schwankung, liegen bereits alle notwendigen Informationen zur Modellierung des Entnahmeentnahmeplans vor. Falls also angenommen wird, dass die jährliche Rendite $\rd{t}$ in jedem Jahr der durchschnittlichen jährlichen Rendite $r$ gleicht und der Vorschlag der Entnahme $e^{*}$ als Basis gewählt wird, dann lassen sich die jährlichen Werte $A_t$ durch die Iterationsvorschrift aus der Gleichung \ref{eq:iteration} leicht berechnen. Tabelle \ref{tab:bspDeterministisch} modelliert exemplarisch einen Entnahmeplan in diesem deterministischen Fall.
+
+\begin{table}[]
+	\begin{tabular}{|c||c|P{2cm}|P{4.5cm}|P{4.5cm}|}
+		\hline
+		\textbf{Alter}     & \textbf{Jahr} & \textbf{optimale Entnahme $e$ zu Jahresbeginn} & \textbf{Wert der Geldanlage nach der Entnahme am Anfang eines Jahres ( $ \widehat{=} ~ A_{t-1}-e$)} & \textbf{Wert der Geldanlage am Ende eines Jahres ( $ \widehat{=} ~ A_t$) }      \\ \hline 		\hline
+		$x_0=67$ & 0           &                  &           & 100.000,00 \\ \hline
+		68      & 1           & 14.281,52        & 85.718,48 & 89.147,22  \\ \hline
+		69      & 2           & 14.281,52        & 74.865,69 & 77.860,32  \\ \hline
+		70      & 3           & 14.281,52        & 63.578,80 & 66.121,95  \\ \hline
+		71      & 4           & 14.281,52        & 51.840,43 & 53.914,05  \\ \hline
+		72      & 5           & 14.281,52        & 39.632,52 & 41.217,83  \\ \hline
+		73      & 6           & 14.281,52        & 26.936,30 & 28.013,76  \\ \hline
+		74      & 7           & 14.281,52        & 13.732,23 & 14.281,52  \\ \hline
+		$x_e=75$ & T=8         & 14.281,52        & 0,00      & 0,00       \\ \hline
+	\end{tabular}
+	\caption{Beispielhafte Modellierung eines Entnahmeplans im deterministischen Fall: Die Kapitalanlage besitzt zu Beginn der Entnahme im Alter von $x_0$ = 67 Jahren den Wert $A_0$ = 100.000 Euro. Die jährliche Rendite $\rd{t}$ beträgt konstant 4\%. Die Entnahme soll bis zum Alter $x_e = 75$ reichen, dementsprechend ist die Laufzeit $T=75-67 = 8$ Jahre. }
+	\label{tab:bspDeterministisch}
+\end{table}
+
+\subsection{Zufällige Rendite}\label{subsec:Zufall}
+Im nächsten Schritt wird von einer zufälligen Entwicklung der Kapitalanlage und dementsprechend unterschiedlichen jährlich Renditen $\rd{t}$ ausgegangen. Konkret bedeutet dies, dass der Wert $\rd{t+1}$ unmittelbar von der zufälligen Entwicklung des Wertes $A_t - e$ im Jahr $(t,t+1]$ abhängt. Außerdem soll die Entnahme $e$ nun beliebig gewählt werden können. Als möglicher Wert für $e$ kommt die Lösung für eine sinnvolle Entnahme $e^{*}$ aus Abschnitt \ref{subsec:BerechnungRente} in Frage.
+
+Unter dieses Voraussetzungen kann es passieren, dass das in den Abschnitten \ref{subsec:AllgWertentwicklung} beschriebene Vorgehen zur Modellierung des Entnahmeprozess nicht dazu führt, dass die Kapitalanlage zum gewünschten Endalter $x_e$ aufgebraucht ist. Eine positive Entwicklung des Marktes könnte dazu führen, dass die Mittel deutlich länger reichen, umgekehrt könnte die Kapitalanlage in einem schlechten Szenario vorzeitig aufgebraucht sein.
+
+Insbesondere ist es unter diesen Umständen äußerst unwahrscheinlich, dass die jährlichen Entnahmen genau ein bestimmtes Endjahr treffen und exakt den Wert 0 treffen. Deswegen muss in jedem Jahr überprüft werden, ob die Entnahme $e$ möglicherweise zu einem negativen Wert der Anlage führen kann. Falls dies der Fall sein sollte, darf nur der maximal mögliche Betrag entnommen werden, sodass $A_t - e = 0$ gilt und die Entnahme damit beendet wird. Dementsprechend muss die jährliche Entnahme $e$ ersetzt werden durch die Entnahme $e_t$ zum Zeitpunkt $t$ und
+\[e_{t}^{opt} = \min\{A_{t}; e\}
+\]
+Die Gleichung \ref{eq:iteration} verändert sich folglich zu
+\begin{align}\label{eq:iteration2}
+A_{t+1} = (A_{t} - e_{t}^{opt}) \cdot (1 + \rd{t+1})
+\end{align}
+
+Zum besseren Verständnis wird in den weiteren Teilen der Arbeit stets Gleichung \ref{eq:iteration} und die Notation $e$ für die allgemeine Entnahme verwendet. Dies macht insofern Sinn, da die Anpassungen in Gleichung \ref{eq:iteration2} lediglich im zufälligen Fall oder bei der Verwendung und nur zum letztmöglichen Zeitpunkt $t$ Einfluss haben können.
+
+\subsection{Black-Scholes-Modell}\label{subsec:black-scholes}
+Die Modellierung unter der Annahme einer zufälligen Entwicklung der Kapitalanlage basiert auf den Erkenntnissen der beiden Wirtschaftswissenschaftler Fischer Black und Myrton Scholes und deren entwickeltem Konzept des sogenannten \textit{Black-Scholes-Modells}. Demzufolge lässt sich unter bestimmten Annahmen die Entwicklung eines Aktienkurses in stetiger Zeit als \textit{geometrische Brownsche Bewegung} beschreiben (vgl. \cite[S.332-334]{hull2006optionen}).
+
+Dazu betrachten wir ein zur Kapitalanlage $A_0$ ähnliches Finanzprodukt $S$, das den identischen Wertverlauf auf dem Markt wie die Kapitalanlage beschreiben soll. Im Folgenden wird die Wertentwicklung jenes Finanzprodukts $S$ im Zusammenhang mit dem Black-Scholes-Modell genauer erläutert. Ziel ist es anhand der Wertentwicklung von $S$ jährliche Renditen $\rd{t}$ zu berechnen, die dann als Basis für die Ermittlung des Entnahmeplans dienen. Es wird angenommen, dass die Renditen einer Anlage unabhängig von dessen Höhe entstehen, weshalb der Wert der Anlage $S$ zu Beginn des gewählten Zeitraums auf den Wert 1 gesetzt wird, dementsprechend gilt $S_0 = 1$.
+
+Die folgenden Ausführungen basieren größtenteils auf den Ausführungen von Hull \cite[S.326-350]{hull2006optionen}.
+
+\subsubsection*{Black-Scholes-Differentialgleichung}
+
+Das Black-Scholes-Modell nimmt an, dass $S$ alle Werte in $\R$ annehmen kann und insbesondere sich der Wert von $S$ vom Startzeitpunkt der Entnahme an jederzeit verändern kann. Dies sind beides idealistische Annahmen, da die Werte von $S$ in der Realität auf Cent-Beträge limitiert sind und die Veränderung der Werte in zeitlicher Hinsicht an die Öffnungszeiten der Börse gebunden sind. Nichtsdestotrotz erscheinen diese Annahmen sinnvolle Vereinfachungen, die nicht allzu großen Einfluss auf die Modellierung haben. Unter diesen Voraussetzungen lässt sich die Entwicklung der Anlage $S$ als stochastischer Prozess mit stetigen Variablen und in stetiger Zeit auffassen. 
+
+Dazu wird angenommen, dass die Entwicklung von $S$ unmittelbar von zwei Parametern abhängt:
+\begin{enumerate}
+	\item \textit{Drift} $\mu ~ (\in \R)$
+	\item \textit{Volatilität} $\sigma ~ (\in \R_+)$
+\end{enumerate}
+
+
+%in einem ersten einfachen Fall die periodische Entnahme $e$ und betrachten somit lediglich die Entwicklung des Wertes $S_t$ in der Zeit.
+Fischer und Scholes formulierten unter diesen Voraussetzungen schließlich das heutzutage weit verbreitete Modell für die Entwicklung von Finanzinstrumenten. Dazu wird die Veränderung $dS$ von $S$ als stochastische Differentialgleichung der Form
+\begin{align}\label{eq:Diff}
+dS = \mu Sdt + \sigma Sdz
+\end{align}
+formuliert. Der Ausdruck $dt$ beschreibt hierbei die Änderung der zeitlichen Komponente und $dz$ einen \textit{Standard-Wiener-Prozess}. 
+
+Im Folgenden wird immer wieder der Bezug zu Zeitabschnitten $\Delta t = t_2 -t_1 ~ (0 \leq t_1 < t_2)$ erläutert. Um den Zusammenhang zur Darstellung als Differentialgleichung zu wahren, soll stets gelten, dass $\Delta t \rightarrow 0$. 
+
+Unter dieser Prämisse lässt sich Gleichung \ref{eq:Diff} auch in diskreter Betrachtungsweise wie folgt annähern:
+\begin{align}
+S_{t + \Delta t} - S_{t} &\approx S_{t} \cdot [ \mu (t + \Delta t - t) + \sigma (z_{t+\Delta t} - z_t) ] \notag\\
+&= S_t \cdot [ \mu \cdot \Delta t + \sigma (z_{t+\Delta t} - z_t) ]\label{eq:Diskret}
+\end{align} 
+
+Zur Veranschaulichung der Gleichung \ref{eq:Diff} macht es Sinn, die beiden Terme $\mu Sdt$ und $\sigma Sdz$ getrennt voneinander zu betrachten. Für den Fall, dass lediglich der Term $\mu Sdt$ und dementsprechend die Gleichung
+\[dS = \mu Sdt
+\]
+beziehungsweise im angenäherten diskreten Fall
+\[S_{t + \Delta t} - S_t \approx \mu S_t \cdot \Delta t
+\]
+
+betrachtet wird, gilt: Der Wert von $S_t$ wächst oder fällt innerhalb dieser winzig kleinen Zeitschritte $\Delta t$ um den Wert $\mu S_t$. Dementsprechend lässt sich $\mu$ als erwartete Rendite innerhalb des kleinen Zeitraums $\Delta t$ auffassen. Zu beachten gilt dabei, dass die erwartete jährliche Rendite sich von diesem Wert unterscheidet. Dieser Unterschied wird im weiteren Verlauf noch genauer erläutert.
+
+Diese Betrachtungsweise ist noch deterministisch und berücksichtigt nicht, dass die Entwicklung einer Aktie einer zufälligen Schwankung unterliegt. Dafür ist letztlich der zweite Term $\sigma Sdz$ beziehungsweise $\sigma S(z_{t+\Delta t} - z_t)$ im diskreten Fall zuständig: Die Variable $z$ unterliegt einem Standard-Wiener-Prozess (vgl. \cite[S.138-139]{Irle2012}), was vier wesentliche Eigenschaften voraussetzt:
+\begin{enumerate}
+	\item Zum Zeitpunkt $t=0$ muss der Wert der Variable $z = 0$ sein.
+	\item Die Wertänderung $z_{t+\Delta t} - z_t$ ist für alle Zeitpunkte $t$ $N(0,\Delta t)$-normalverteilt\footnote{Die Normalverteilung N($\mu$,$\sigma^2$) wird eindeutig charakterisiert durch zwei Parameter: $\mu$ beschreibt den Erwartungswert der Verteilung, $\sigma^2$ die Varianz (vgl. \cite[S.294]{Fahrmeir2007})}.
+	%Eine anschauliche Beschreibung dieser Eigenschaft ergibt sich bei Betrachtung des diskreten Falles: Ersetzt man den Grenzwert $dz$ durch eine kleine Differenz $z_2 - z_1 = \Delta z$ ergibt
+	\item Für jeden Zeitabschnitt $\Delta t$ ist die Entwicklung von der Variable innerhalb dieses Zeitabschnittes stochastisch unabhängig von allen vorangegangenen Abschnitten. Das heißt insbesondere, dass die historische Entwicklung der Variable keinerlei Einfluss auf die Zukunft hat\footnote{Dies steht im Einklang mit der sogenannten schwachen Kapitalmarkteffizienz: Diese besagt, dass Anleger, die Informationen über die Historie einer Wertpapieranlage haben, nicht unbedingt mehr Gewinne erzielen, als solche die ohne Kenntnisse investieren (vgl. \cite[S.326-327]{hull2006optionen})}.
+	\item Die Variable $z$ modelliert einen stetigen stochastischen Prozess, das heißt Wertänderungen können zu jedem möglichen Zeitpunkt erfolgen.
+\end{enumerate}
+Dementsprechend bewirkt der zweite Teil der Gleichung \ref{eq:Diff} ($\sigma S dz$) eine zusätzliche Streuung zur bereits erwarteten Änderung um den Wert $\mu S$. 
+
+In der angenäherten Betrachtungsweise aus Gleichung \ref{eq:Diskret} bedeuten diese wesentlichen Eigenschaften, dass innerhalb einer Zeiteinheit $\Delta t$ der Term $z_{t+\Delta t} - z_t$ entscheidenden Einfluss auf die Wertänderung nimmt. Betrachtet man eine Vielzahl an identisch großen Zeitabschnitten $\Delta t$ und identische Anfangswerte $S_t$, so entspricht der Mittelwert der Veränderungen von $S_t$ innerhalb dieser Abschnitte exakt $\Delta t \cdot \mu S_t$. Die konkreten einzelnen Wertänderungen unterliegen jedoch der zufälligen Entwicklung verursacht durch die Volatilität von $z_{t+\Delta t} - z_t$.
+
+Abbildung \ref{fig:Prozesse} zeigt die unterschiedliche Bedeutung der beiden Terme in Gleichung \ref{eq:Diff}. Die gesamte Gleichung entwickelt sich im Durchschnitt annähernd wie die deterministische Betrachtung $dS = \mu S dt$. Der Wiener-Prozess $\sigma S dz$ entwickelt sich hingegen im Durchschnitt um den Startwert $S_0$ herum. Jedoch bewirkt die Volatilität in der Entwicklung von $\sigma Sdz$ dieselben Ausschläge, wie sie auch in der gesamten Gleichung \ref{eq:Diff} sichtbar sind.
+
+\begin{figure}
+	\includegraphics[width=\linewidth]{images/Prozesse}
+	\caption{Vergleich der einzelnen Bestandteile aus Gleichung \ref{eq:Diff} anhand einer möglichen Entwicklung des stochastischen Prozesses}
+	\label{fig:Prozesse}
+\end{figure}
+
+Problematisch ist bisher jedoch, dass wir noch nicht wissen, wie Gleichung \ref{eq:Diff} uns bei der Berechnung der Entwicklung des Wertes $S$ weiterhelfen kann. Eine explizite Berechnungsvorschrift für die Veränderung von $S$ ergibt sich jedoch durch Anwenden der \textit{Itô-Formel} für stochastische Integrale (vgl. \cite[S.218]{Irle2012}). Diese Konzepte erfordern ein tiefes Verständnis der stochastischen Maß- und Integrationstheorie und dementsprechend sei an dieser Stelle auf weiterführende Literatur verwiesen (vgl. \cite[S.181-222]{Irle2012}).
+
+\subsubsection*{Lösung der Black-Scholes-Differentialgleichung}
+
+Als Lösung der stochastischen Differentialgleichung \ref{eq:Diff} ergibt sich dann
+\begin{align}\label{eq:LsgDiff}
+S_t &= S_0 \cdot \exp((\mu-\frac{1}{2}\sigma^2)\cdot t + \sigma z_t) \notag\\
+&= S_0 \cdot \exp((\mu-\frac{1}{2}\sigma^2)\cdot t + \sigma \cdot \sqrt{t} \cdot \epsilon) ~,
+\end{align}
+wobei $\epsilon$ eine standardnormalverteilte Zufallsvariable darstellt.
+
+Es folgt:
+\begin{align}
+\ln(S_t) = \ln(S_0) + (\mu-\frac{1}{2}\sigma^2) \cdot t + \sigma \cdot \sqrt{t} \cdot \epsilon \label{eq:lnAllg}
+\end{align}
+Die einzig verbleibende zufällige Komponente in Gleichung \ref{eq:lnAllg} ist schließlich jene Zufallsvariable $\epsilon$. Es folgt unmittelbar, dass
+\begin{align}
+\ln(S_t) \sim N \left( \ln(S_0) + (\mu-\frac{1}{2}\sigma^2) \cdot t, \sigma^2 \cdot t\right) ~,
+\end{align} 
+
+also $S_t$ lognormalverteilt (vgl. \cite[S.301]{Fahrmeir2007}) ist. Diese Information wird schließlich im Entnahmemodell benutzt, um die Wertentwicklung der Anlage $S$ zu beschreiben. Berücksichtigt man nun die Annahme zu Beginn des Kapitels, dass $S_0 = 1$ gilt, vereinfacht sich Gleichung \ref{eq:lnAllg} zu
+\begin{align}
+\ln(S_t) \sim N \left( (\mu-\frac{1}{2}\sigma^2) \cdot t, \sigma^2 \cdot t \right) ~.
+\end{align} 
+
+Betrachtet man nun zwei Zeitpunkte $0 \leq t_1 < t_2 \textrm{ mit } \Delta t = t_2-t_1$, dann ergibt sich, dass
+\begin{align}
+\ln(\frac{S_{t_2}}{S_{t_1}}) \sim N \left( (\mu-\frac{1}{2}\sigma^2) \cdot \Delta t, \sigma^2 \cdot \Delta t\right) ~.\label{distr:Aenderung}
+\end{align}
+Dies bedeutet, dass innerhalb eines Jahres die logarithmierte Wertänderung der Anlage $S$ normalverteilt ist mit den in Ausdruck \ref{distr:Aenderung} beschriebenen Parametern. 
+
+Letztlich soll anhand der beschriebenen Modellierung der Anlage $S$ eine jährlich erzielte Rendite berechnet werden, die der zugeordneten Kapitalanlage $A_0$ zugewiesen wird.  Dabei gilt es jedoch zu berücksichtigen, dass die Modellierung im Black-Scholes-Modell auf einer stetigen Wertentwicklung basiert und dementsprechend die Rendite in Bezug auf die allgemeine Iterationsgleichung \ref{eq:iteration} annualisiert und diskretisiert werden muss.
+
+Die stetige Rendite (vgl. \cite[S.112-113]{hull2006optionen}) $\rt{(0,t]}$ der Anlage $S$ innerhalb der Zeitspanne $(0,t] ~,~ (t \in \N)$ nimmt in einem stetigen Finanzmarktmodell wie dem Black-Scholes-Modell folgendermaßen Einfluss auf die Wertentwicklung der Anlage $S$:
+\begin{align}
+S_t = S_0 \cdot \exp(\rt{(0,t]} \cdot t) = S_0 \cdot \prod_{i=1}^{t} \exp(\rt{(i-1,i]} \cdot 1) ~,
+\end{align}
+wobei $\rt{(i-1,i]}$ die stetige Rendite der Anlage $S$ im Zeitraum $(i-1,i]$ bezeichnet. Folglich ergibt sich für den Zeitraum $(t-1,t]$:
+\begin{align}
+S_{t} = S_{t-1} \cdot \exp(\rt{(t-1,t]}) &\Leftrightarrow \rt{(t-1,t]} = \ln \left( \frac{S_t}{S_{t-1}}\right) \label{eq:stetigeRendite}
+\end{align}
+Damit zeigt sich unter Berücksichtigung der Information aus Ausdruck \ref{distr:Aenderung}, dass die stetige Rendite $\rt{(t-1,t]}$ einer Normalverteilung mit den folgenden Parametern entspricht:
+\begin{align}
+\rt{(t-1,t]} \sim N \left( (\mu-\frac{1}{2}\sigma^2), \sigma^2 \right) ~.
+\end{align}
+
+Weiter gilt dann unter Berücksichtigung des Erwartungswertes für lognormalverteilte Zufallsvariablen\footnote{Eine lognormalverteilte Zufallsvariable $Z$ mit $\ln(Z) \sim N(\mu,\sigma^2)$ hat den Erwartungswert $\E(Z) = \exp(\mu+\frac{1}{2} \cdot \sigma^2)$ (vgl. \cite[S.301]{Fahrmeir2007})} für  $\E(\exp(\rt{(t-1,t]}))$, dass
+\begin{align}
+\E(\exp(\rt{(t-1,t]}))
+= \exp(\mu) ~. \label{eq:erwarteteRendite}
+\end{align}
+
+Da sich der Wert der Rendite bei einer einfachen jährlichen Verzinsung aus der Wertveränderung der Anlage im Vergleich zum Vorjahr ergibt ($\rd{t} = \frac{S_{t}}{S_{t-1}}-1$), lässt sich dieser unter Verwendung der Information aus Äquivalenz \ref{eq:stetigeRendite} folgendermaßen ermitteln:
+\begin{align}
+\rd{t} &= \frac{S_{t}}{S_{t-1}} - 1 \notag \\
+&= \exp(\rt{(t-1,t]}) - 1 ~, \label{eq:jaehrlRendite}
+\end{align}
+Für den Erwartungswert der diskreten Rendite $\rd{t}$ im Jahr $(t-1,t]$ ergibt sich dann aufgrund von Gleichung \ref{eq:erwarteteRendite}:
+\begin{align}
+\E(\rd{t}) &= \E\left( \exp(\rt{(t-1,t]}) - 1\right) \notag\\
+&= \exp(\mu) -1 \label{eq:renditeJahr}
+\end{align}
+
+\subsubsection*{Wahl der Parameter $\mu$ und $\sigma$}
+
+Offen bleibt, wie die beiden Parameter $\mu$ und $\sigma$ gewählt werden müssen, damit diese in Einklang mit der Modellierung der Entnahmemodells stehen. In Abschnitt \ref{subsec:BerechnungRente} wird zur Berechnung der planmäßigen Entnahme eine konstante Rendite $r$ als maßgeblicher Parameter gewählt. Um konsistent mit dieser Annahme zu sein, macht es Sinn die erwartete Rendite $\E(\rd{t})$ im zugehörigen Black-Scholes-Modell für alle $t$ gleich $r$ zu setzen. Damit folgt für die Drift $\mu$:
+\begin{align}
+\begin{split}
+&~ \E(\rd{t}) = r \\
+\Leftrightarrow & ~ \exp(\mu) -1 = r \\
+\Leftrightarrow & ~ \mu = \ln(1+r)
+\end{split}
+\end{align}
+Wenn also eine Kapitalanlage im Durchschnitt eine jährliche Rendite von 4\% erzielen soll und zusätzlich beispielsweise eine Volatilität von 20\% vorausgesetzt wird, dann muss im Black-Scholes-Modell der Wert $\mu = \ln (1+ 0,04) \approx 0,0039$ gewählt werden.
+
+In diesem Beispiel wurde für die Volatilität $\sigma$ ein beliebiger Wert von 20\% festgelegt. Da dieser Parameter im Gegensatz zu $\mu$ in keinem Zusammenhang zu anderen Variablen des Modells steht kann $\sigma$ beliebig gewählt werden.
+
+\subsubsection*{Anwendung des Black-Scholes-Modells}
+Die Modellierung der Wertentwicklung der Kapitalanlage, die dem Entnahmeentnahmeprozess zu Grunde liegt, erfolgt nun anhand der Erkenntnisse des Black-Scholes-Modells. Konkret bedeutet dies, dass die Lösung \ref{eq:LsgDiff} der Black-Scholes-Differentialgleichung für jedes Jahr $(t,t+1]$ verwendet wird, um die Entwicklung der Kapitalanlage $S$ zu modellieren. Eine zufällig gezogene Zahl aus der Standardnormalverteilung repräsentiert dabei die Zufallsvariable $\epsilon$ in Gleichung \ref{eq:LsgDiff}.
+
+Dementsprechend wird iterativ für jeden Zeitpunkt $t \in \N$ der Wert $S_{t+1}$ durch
+\begin{align}
+S_{t+1} = S_t \cdot \exp((\mu-\frac{1}{2}\sigma^2)\cdot 1 + \sigma \cdot \sqrt{1} \cdot \epsilon) \label{eq:finalBlackScholes}
+\end{align}
+ermittelt. Die Rendite $\rd{t+1}$ im Jahr (t,t+1] ergibt sich dann unmittelbar durch
+\begin{align}
+\rd{t+1} = \frac{S_{t+1}}{S_t} - 1 \label{eq:realRendite}
+\end{align}
+Unter der Annahme, dass sich die Anlage $S$ identisch auf dem Markt verhält wie die Kapitalanlage des Entnahmeentnahmeprozesses, wird diese jährliche Rendite dann zur Berechnung des Wertes $A_{t+1}$ nach der Iterationsvorschrift \ref{eq:iteration} verwendet.
+
+
+
+\subsubsection*{Beispielhafte Modellierung}
+
+Tabelle \ref{tab:bspZufall} modelliert den kompletten Vorgang bei einer zufälligen Entwicklung der Anlage mit den gleichen Voraussetzungen wie in Tabelle \ref{tab:bspDeterministisch} im deterministischen Fall. Zur einfacheren Darstellung wird angenommen, dass die durchschnittliche jährliche Rendite $r$ 4\% betragen soll und die Standardabweichung $\sigma$ den Wert 20\% zugewiesen bekommt.
+
+In einem ersten Schritt wird anhand des in Abschnitt \ref{subsec:BerechnungRente} beschriebenen Vorgehens die optimale Entnahme für die anvisierte Laufzeit $T$ berechnet. Anschließend wird für jedes Jahr $t$ eine zufällige Zahl aus der Standardnormalverteilung gezogen, die wiederum gemeinsam mit dem berechneten Wert $\mu$ und dem vorgebenen Parameter $\sigma$ für die Standardabweichung den Wert der normierten Anlage $S_t$ anhand Gleichung \ref{eq:LsgDiff} beeinflusst. Die Rendite $\rd{t}$ im Jahr (t-1,t] ergibt sich dann aus Gleichung \ref{eq:realRendite}. Diese wird schließlich verwendet, um mit der allgemeinen Iterationsvorschrift aus Gleichung \ref{eq:iteration} die Entwicklung von $A_t$ zu modellieren.
+
+Im Vergleich von Tabelle \ref{tab:bspDeterministisch} und der deterministischen Sichtweise und der zufälligen Betrachtung in Tabelle \ref{tab:bspZufall} zeigen sich die wesentlichen Unterschiede zwischen den beiden Ansätzen:
+Die jährliche Rendite $\rd{t}$ unterscheidet sich im stochastischen Fall deutlich von der deterministischen Betrachtungsweise. Im ersteren Fall variieren die Werte von $\rd{t}$ von Jahr zu Jahr, in der deterministischen Sichtweise sind diese hingegen konstant in jedem Zeitraum.
+
+Als Folge dessen verändert sich der Wert $A_t$ in jedem Jahr unterschiedlich, was letztlich bewirkt, dass die Geldanlage nicht zwangsläufig zum anvisierten Entnahmeaustrittsalter $A_e$ aufgebraucht ist. 
+\begin{table}[]
+	\centering
+	\begin{tabular}{|c|c||P{1.5cm}|P{1.5cm}|P{1.5cm}||P{2cm}|P{2.5cm}|P{2.5cm}|}
+		\hline
+		\textbf{Alter} & \textbf{$t$} & \textbf{Zufällige Zahl aus $N(0,1)$} & \textbf{Wert der normierten Anlage $S_t$} & \textbf{Reali- sierte Rendite $\rd{t}$} & \textbf{optimale Entnahme $e$} & \textbf{Wert der Geldanlage nach der Entnahme am Anfang des Jahres t ( $ \widehat{=} ~ K_{t-1}-e$)} & \textbf{Wert der Geldanlage am Ende des Jahres t ( $ \widehat{=} ~ A_t)$) }          \\  \hline \hline
+		$A_b = 67$    & 0 &          & 1,00 &         &           &           & 100.000,00 \\ \hline
+		68    & 1 & 0,93171  & 0,97 & -2,71\% & 14.281,52 & 85.718,48 & 83.398,55  \\ \hline
+		69    & 2 & -0,55939 & 1,19 & 22,82\% & 14.281,52 & 69.117,03 & 84.890,71  \\ \hline
+		70    & 3 & -0,38779 & 1,09 & -8,85\% & 14.281,52 & 70.609,19 & 64.360,69  \\ \hline
+		71    & 4 & 1,78054  & 1,03 & -5,67\% & 14.281,52 & 50.079,17 & 47.241,26  \\ \hline
+		72    & 5 & -0,29109 & 1,50 & 45,55\% & 14.281,52 & 32.959,74 & 47.971,91  \\ \hline
+		73    & 6 & -0,39842 & 1,44 & -3,82\% & 14.281,52 & 33.690,39 & 32.401,83  \\ \hline
+		74    & 7 & 0,18610  & 1,35 & -5,87\% & 14.281,52 & 18.120,31 & 17.057,16  \\ \hline
+		$A_e = 75$   & 8 & 1,66459  & 1,43 & 5,81\%  & 14.281,52 & 2.775,63  & 2.936,80   \\ \hline
+		76    & 9 &          &      &         & 2.936,80  & 0,00      & 0,00       \\ \hline
+	\end{tabular}
+	\caption{Beispielhafte Modellierung eines Entnahmeentahmeplans in einem möglichen zufälligen Fall: Die Kapitalanlage besitzt zu Beginn des Entnahmeintritts im Alter von $x_0$ = 67 Jahren den Wert $A_0$ = 100.000 Euro. Die durchschnittliche jährlich Rendite $r$ beträgt 4\% und die Standardabweichung $\sigma$ = 20\% für alle $t$. Die Entnahme soll bis zum Alter $x_e = 75$ reichen, dementsprechend ist die Laufzeit $T=75-67 = 8$ Jahre. Die Realisierungen des Black-Scholes-Modells ergeben, dass am Ende im Alter $x_e = 75$ noch 2.936,80 Euro übrig sind.}
+	\label{tab:bspZufall}
+\end{table}
+
+\section{Simulation des Modells}\label{sec:simulation}
+Um die Fragestellung dieser Arbeit (vgl. Abschnitt \ref{sec:motivation}) in vernünftiger Art und Weise zu beantworten reicht es nicht lediglich eine mögliche Entwicklung des Entnahmeprozesses zu betrachten. Bei der Modellierung des Entnahmeprozesses wird für jeden Zeitpunkt $t$ die standardnormalverteilte Zufallsvariable $\epsilon$ aus Gleichung \ref{eq:finalBlackScholes} durch eine zufällig gezogene Zahl aus der Standardnormalverteilung repräsentiert. Damit ergibt sich jedoch nur ein mögliches Szenario des Entnahmeprozesses (vgl. dazu Tabelle \ref{tab:bspZufall}), das keineswegs die gesamte Verteilung aller alternativen Entwicklungen des Entnahmeprozesses darstellen kann. Insbesondere sind hinsichtlich der grundlegenden Fragestellung der Arbeit (vgl. Abschnitt \ref{sec:motivation}) anhand eines einzelnen Prozesses keine Schlussfolgerungen auf ein realistisches Gesamtbild möglich.
+
+Je öfter die Modellierungen jedoch wiederholt wird, desto genauer erhält man einen Einblick über die möglichen Entwicklungen des Entnahmeprozesses. Betrachtet man das Alter, bis zu welchem die angesparten Mittel letztlich reichen als hauptsächliche Zielgröße, so lässt sich unter Berücksichtigung der Variablen aus Abschnitt \ref{sec:variablen} bei mehrfacher Wiederholung des Entnahmeprozessen eine adäquate Häufigkeitsverteilung über diese Zielgröße ermitteln.
+
+\newpage
+
+
+
+%Anschaulich lässt sich dies mit dem Konzept der Monte-Carlo-Simulation darstellen. Die Monte-Carlo-Simulation wird verwendet, um stochastische Prozesse zu vorhersagen. Dabei wird für jeden Zeitraum $\Delta t = t_2 - t_1 (0 \leq t_1 < t_2 bel.)$ die Wertentwicklung anhand der vorgegebenen Driftrate und Varianzrate mit dem Wert der Aktie $S_T$ aus dem vorhergehenden Zeitraum verrechnet.
+
+
+\begin{comment}
+Zum einen muss die Entwicklung von z für beliebige infinitesimale Zeitintervalle $\Delta t$ unabhängig stattfinden, das heißt insbesondere, dass die historische Entwicklung der Variable keinerlei Einfluss auf die Zukunft hat. Zum anderen gilt für jeden infinitesimalen Zeitraum $\Delta t$, dass die Änderung $\Delta z$ gegeben ist durch
+\[ \Delta z = \epsilon \sqrt{\Delta t},
+\]
+wobei $\epsilon$ der Standardnormalverteilung unterliegt. Dies macht insofern Sinn, dass bei einer Variablen, dessen Wertveränderung innerhalb eines Jahres durch eine Standardnormalverteilung beschrieben wird, die Volatilität beispielsweise für ein halbes Jahr den Wert $\sqrt{0.5}$ besitzt. 
+\end{comment}
+
+
+
+
+
+
+
+
+
+
+\begin{comment}
+
+Entscheidend für den Entnahmeplan der Geldanlage ist deren Entwicklung auf dem Markt. Die \textit{realisierte Rendite} $\rd{t}$ beschreibt die realisierte Entwicklung des Investments innerhalb des Jahres $t$. Zu unterscheiden ist diese von der \textit{Renditeerwartung} $r_t$: Diese ist lediglich ein entscheidender Parameter in der Entwicklung der Werte $A_t (t \in \N)$. Beide Größen werden als Vektor aufgefasst, dessen Einträge die Renditeentwicklung in jedem einzelnen Jahr darstellt. Der $i$-te Eintrag dieses Vektors repräsentiert dementsprechend die realisierte Rendite beziehungsweise die Renditeerwartung zum Zeitpunkt $i = t$.
+
+Die Renditeerwartung von Anlegern hängt unmittelbar davon ab, wie riskant die Anlage ist\footnote{vgl. \cite[S.349]{hull2006optionen}}. Analog zu der Renditeerwartung macht es daher Sinn, für jede Periode einen Wert für das Risiko in das Modell miteinzubeziehen. Gemeinsam mit der Renditeerwartung $r_t$ im jeweiligen Jahr stellt die Standardabweichung $\sigma_t$ die relevanten Parameter in der Wertentwicklung der $A_t$ dar. Analog wie die beiden Kenngrößen der Rendite wird die Standardabweichung durch einen Vektor beschrieben, dessen $i$-ter Eintrag für die Standardabweichung der Kapitalanlage im Jahr $t=i (i \in \N)$ steht. Im Falle einer deterministischen Entwicklung der Anlage gilt jedoch logischerweise für alle $t \in \N$: $\sigma_t = 0$.
+
+
+
+
+
+
+
+
+
+
+%Wir unterstellen der Entwicklung der $A_t$, dass sie die sogenannte Markov-Eigenschaft erfüllen. Die Markov-Eigenschaft sagt im Wesentlichen aus, dass die Information der Entwicklung einer Anlage einzig und allein in der vorhanden Zufallsvariable steckt und unabhängig ist von allen vorangegangenen Zufallsvariablen \cite[S.357 ff.]{2013WTheorie}\cite[S.326]{hull2006optionen} \footnote{Vgl. auch \cite[S.357 ff.]{2013WTheorie}}. In diesem Fall bedeutet dies, dass der Wert von $K_{t-1},K_{t-2}, \cdots$ keinen Einfluss auf die Entwicklung von $A_{t+1}$ hat. Einzig der momentane Zustand $A_t$ ist entscheidend für die Entwicklung von $A_{t+1}$. Dies macht insofern Sinn, dass dies dem Konzept der schwachen Kapitalmarkteffizienz entspricht. Dieser Theorie nach haben Anleger, die Informationen über den historischen Kursverlauf einer Anlage haben, keine größeren Gewinnaussichten, als andere.
+
+%Zudem nehmen wir an, dass sich die Änderung $\Delta K = A_{t+1}-A_{t}$ als Normalverteilung 
+
+
+%Im ersten und einfacheren Fall betrachten wir eine Anlage, die sich deterministisch verhält. Konkret bedeutet dies, dass die Standardabweichung jeder einzelnen Zufallsvariablen $A_t = 0$ ist.Demnach lässt sich die Veränderung zweier Zeitpunkte $t$ und $t+1$ beschreiben durch
+%\[ \Delta K = A_{t+1} - A_{t} = (A_{t} - e) \cdot (1 + r_{t+1}) ~ \forall t \in \N_{0}
+%\]
+
+
+Unter dieser Voraussetzung lässt sich die Entwicklung einer Aktie beziehungsweise einer Anlage wie in diesem Modell durch eine geometrische Brownsche Bewegung der Form
+\[ K_{t+P} = A_t \cdot \exp \left( (r_{t+1} - \frac{\sigma_{t+P}}{2}) \cdot P + \sigma_{t+P} \cdot \sqrt{P} \cdot \phi^{-1}(\epsilon) \right) 
+\] modellieren. Dabei folgt $\epsilon$ einer Standardnormalverteilung.
+Inhalt...
+\end{comment}
+
+

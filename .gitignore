@@ -274,3 +274,14 @@ TSWLatexianTemp*
 
 # Makeindex log files
 *.lpz
+
+# Drop all files which are in the software folder
+
+Software/
+
+# Keep all files which are in the paper folder
+!Paper/*.pdf
+
+# Mp4-files
+
+*.mp4
