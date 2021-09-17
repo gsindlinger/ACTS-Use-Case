@@ -614,7 +614,7 @@ pdfborder=0 0 0	% keine Box um die Links!
 \frontmatter
 \setcounter{page}{-1}
 % Titelseite
-\input{files/00_title.tex}
+\input{sections/00_title.tex}
 % 1,5-facher Zeilenabstand
 \onehalfspacing
 %Leere Seite nach der Titelseite
@@ -645,24 +645,12 @@ pdfborder=0 0 0	% keine Box um die Links!
 
 \mainmatter
 % Einleitung
-\input{files/einleitung}
-% Kapitel 1
-\input{files/kap_1}
-% Kapitel 2
-\input{files/kap_2}
-% Kapitel 3
-\input{files/kap_3}
-% Kapitel 4
-\input{files/kap_4}
-% Kapitel 5
-\input{files/kap_5}
-% Fazit
-\input{files/fazit}
+\input{sections/einleitung}
 
 
 \appendix
 % hier Anhänge einbinden
-\input{files/sources}
+%\input{sections/sources}
 
 \normalsize
 
@@ -676,5 +664,5 @@ pdfborder=0 0 0	% keine Box um die Links!
 
 
 \clearpage
-\input{files/00_erklaerung}
+\input{sections/00_erklaerung}
 \end{document}
