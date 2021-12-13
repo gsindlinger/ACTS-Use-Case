@@ -1,0 +1,136 @@
+%
+%   name    :   actuar.sty
+%   author  :   Stefan Nachbauer, Andreas Schmidt
+%   date    :   20020119, 20020120, 20020913, 20021024, 20021031, 20021106
+%   company :   IFA (Institut fuer Finanz- und Aktuarwissenschaften)
+%
+%   Version :   1.4
+%
+%   There is no warranty at all.
+%
+
+%   History :
+%   1.1 : Neu: \naex
+%   1.2 : Neu: allgemeiner Barwert \axn; alle anderen Barwerte auskommentiert
+%   1.3 : Neu: allg. BW \nax, Dynamik-BW \axdyn und Wahrscheinlichkeiten \kpx, \kpxa und \kpxj
+%   1.4 : Definition von ActuarsAngle feiner angepasst (Abstaende etc.)
+
+
+
+%Definition von ActuarsAngle:
+\DeclareRobustCommand{\ActuarsAngle}[1]{\thinmuskip=1.5mu
+  \setbox0=\hbox{$\scriptstyle\overline{\rule[-1pt]{0pt}{0ex}\,#1\,}$} 
+  \dimen0=\ht0 \advance\dimen0 by -0.4pt 
+  \scriptstyle\overline{\rule[-1pt]{0pt}{0ex}\,#1\,}\vrule height \dimen0
+}
+
+%-------------------------
+%Definition von Barwerten:
+%-------------------------
+
+%allgemeiner Barwert 
+%     mit Haken unten rechts, der fest vorgegeben ist
+% #1: Index oben links (z.B. Anzahl der unterjaehrigen Zahlungen in Klammern) [Voreinstellung: leer]
+% #2: Symbol fuer Barwert (z.B. A, a, \ddot{a}, ...)
+% #3: erster Index unten rechts (Alter; evtl. mit ":"; bleibt leer bei Zeitrente)
+% #4: zweiter Index unten rechts (Laufzeit; das, was unter dem Haken steht)
+% #5: Index oben rechts (z.B. Geburtsjahr in Klammern, Gesamtheit, Anwartschaft, ...)
+\DeclareRobustCommand{\axn}[5][]{\ensuremath{\displaystyle {}^{#1} {#2}_{{#3}\ActuarsAngle{#4}}^{#5}}
+}
+
+%allgemeiner Barwert, bei dem 
+%     links (unten oder oben) ein Index dransteht
+% #1: Index oben links (z.B. Anzahl der unterjaehrigen Zahlungen in Klammern) [Voreinstellung: leer]
+% #2: Index unten links (Aufschub bzw. Laufzeit; evtl. mit "|"; sollte nur leer bleiben, wenn #1 nicht leer)
+% #3: Symbol fuer Barwert (z.B. A, a, \ddot{a}, ...)
+% #4: Index unten rechts (Alter; bleibt niemals leer)
+% #5: Index oben rechts (z.B. Geburtsjahr in Klammern, Gesamtheit, Anwartschaft, ...)
+\DeclareRobustCommand{\nax}[5][]{\ensuremath{\displaystyle {}^{#1}_{#2} {#3}_{#4}^{#5}}
+}
+
+%Barwert einer dynamisch wachsenden Rente
+%     mit Symbol "a" für Barwert festvorgegeben
+%     darauf steht das Symbol "<" fuer dynamisch wachsend
+% #1: Index oben links (z.B. Anzahl der unterjaehrigen Zahlungen in Klammern) [Voreinstellung: leer]
+% #2: Index unten rechts (Alter; bleibt niemals leer)
+% #3: Index oben rechts (Gesamtheit, Anwartschaft, ...)
+\DeclareRobustCommand{\axdyn}[3][]{\ensuremath{\displaystyle
+      {}^{#1}_{} \!\!\stackrel{\scriptscriptstyle <}{a}\!\! _{#2}^{#3}}
+}
+
+
+%------------------------------------
+%Definition von Wahrscheinlichkeiten:
+%------------------------------------
+
+%allgemeine Wahrscheinlichkeit, bei der
+%     links unten ein Index dransteht, 
+%     oben (weder links noch rechts) aber nicht
+% #1: Index unten links (Dauer und evtl Aufschub; evtl. mit "|"; sollte nicht leer bleiben)
+% #2: Symbol fuer Wahrscheinlichkeit (z.B. p, q, i, ... -- auch fuer d zu benutzen)
+% #3: Index unten rechts (Alter; bleibt niemals leer)
+\DeclareRobustCommand{\kpx}[3]{\ensuremath{\displaystyle {}_{#1} {#2}_{#3}}
+}
+
+%allgemeine Wahrscheinlichkeit, bei der
+%     links unten ein Index dransteht, 
+%     oben rechts auch ein Index (evtl. mit Klammern) dransteht
+% #1: Index unten links (Dauer und evtl Aufschub; evtl. mit "|"; sollte nicht leer bleiben)
+% #2: Symbol fuer Wahrscheinlichkeit (z.B. p, q, i, ... -- auch fuer d zu benutzen)
+% #3: Index unten rechts (Alter; bleibt niemals leer)
+% #4: Index oben rechts (z.B. Geburtsjahr in Klammern, Ausscheideursache mit/ohne Klammern)
+\DeclareRobustCommand{\kpxj}[4]{\ensuremath{\displaystyle {}_{#1}^{} {#2}_{#3}^{#4}}
+}
+
+
+%------------------------------------------
+%Definition von Barwerten (auskommentiert):
+%------------------------------------------
+
+%Leibrente, vorschuessig
+% #1: Alter [Voreinstellung: x]
+% #2: Jahr aus Grundtafel
+%\DeclareRobustCommand{\aex}[2][x]{\ensuremath{{\ddot{a}}_{#1}^{#2}} }
+
+%Leibrente, vorschuessig (n Jahre)
+% #1: Alter [Voreinstellung: x]
+% #2: Dauer
+% #3: Jahr aus Grundtafel
+%\DeclareRobustCommand{\aexn}[3][x]{\ensuremath{{\ddot{a}}_{{#1}:\ActuarsAngle{#2}}^{#3}} }
+
+%aufgeschobene (n Jahre) Leibrente, vorschuessig
+% #1: Alter [Voreinstellung: x]
+% #2: Aufschubdauer
+% #3: Jahr aus Grundtafel
+%\DeclareRobustCommand{\naex}[3][x]{\ensuremath{{}_{#2|}{\ddot{a}}_{#1}^{#3}} }
+
+%Leibrente, nachschuessig
+% #1: Alter [Voreinstellung: x]
+% #2: Jahr aus Grundtafel
+%\DeclareRobustCommand{\ax}[2][x]{\ensuremath{{a}_{#1}^{#2}} }
+
+%Leibrente, nachschuessig (n Jahre)
+% #1: Alter [Voreinstellung: x]
+% #2: Dauer
+% #3: Jahr aus Grundtafel
+%\DeclareRobustCommand{\axn}[3][x]{\ensuremath{{a}_{{#1}:\ActuarsAngle{#2}}^{#3}} }
+
+%Todesfallversicherung
+% #1: Alter [Voreinstellung: x]
+% #2: Jahr aus Grundtafel
+%\DeclareRobustCommand{\Ax}[2][x]{\ensuremath{{A}_{#1}^{#2}} }
+
+%Todesfallversicherung (n Jahre)
+% #1: Alter [Voreinstellung: x]
+% #2: Dauer
+% #3: Jahr aus Grundtafel
+%\DeclareRobustCommand{\nAx}[3][x]{\ensuremath{{}_{|#2}{A}_{#1}^{#3}} }
+
+%Gemischte Lebensversicherung
+% #1: Alter [Voreinstellung: x]
+% #2: Dauer
+% #3: Jahr aus Grundtafel
+%\DeclareRobustCommand{\Axn}[3][x]{\ensuremath{{A}_{{#1}:\ActuarsAngle{#2}}^{#3}} }
+
+
+\endinput
