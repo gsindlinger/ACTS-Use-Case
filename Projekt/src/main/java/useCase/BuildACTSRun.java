@@ -4,55 +4,17 @@ import edu.uta.cse.fireeye.common.*;
 import edu.uta.cse.fireeye.common.TestGenProfile.ConstraintMode;
 import edu.uta.cse.fireeye.service.engine.IpoEngine;
 import useCase.suts.SUTObject;
+import useCase.suts.SUTObjectAbstract;
+import useCase.suts.SUTObjectComplex;
 import useCase.suts.SUTObjectSimple;
 import util.Tool;
 import util.Util;
 
+import java.util.function.DoubleToLongFunction;
+
 /**
  * This test class shows how to use the API interface of ACTS to
  * build a test set.
- */
-
-
-/**
- * Constraints:
- * AR10 Direktversicherung, Direktzusage --> detaillierte Beträge
- * AR10 Unterstützungskasse --> nur Beitrag (also Betrag 3.63 und Betrag 40b = 0) & keine BBG-Grenze?
- *
- * Arbeitgeberfinanziert --> Arbeitnehmerbeitrag = 0?
- *
- * FR20 nur mit Direktversicherung und keine Rückdeckung?
- *
- * PK10 <=> Pensionskasse. Was ist mit Rückdeckung?
- *
- * Berechnung von Direktzusage (mit/ohne Rückdeckung)? Gibt es Rückdeckung nur bei Direktzusage?
- *
- */
-
-
-/*
-Direktversicherung nur ohne Rückversicherung - done
-
-Direktzusage nur Rückdeckung + Unterstützungskasse (alles was Ukasse ist automatisch Direktzusage)
-
-Pensionskasse nur ohne Rückversicherung
-
-Unterstützungskasse keine BBG-Grenze/keine Zuzahlung
-
-Direktzusage immer arbeitgeberfinanziert (keine BBG-Grenze)
-*/
-
-
-
-/*
-Mindestbeitrag/monatlich = 50 Euro
-Für die Fälle mit fehlender BBG-Grenze
-Ab 125.000 extra Meldung mit Vorschlag bei Betreuer, aber nur wenn keine BBG-Grenze(Pensionskasse & Direktversicherung)
-
-Direktzusage/Rückdeckung: Zuzahlung < 1 Mio., extra Meldung mit Vorschlag bei Betreuer
-
-40b darf 2.148 Euro nicht überschreiten --> siehe Gesetz
-
  */
 
 
@@ -64,7 +26,7 @@ Direktzusage/Rückdeckung: Zuzahlung < 1 Mio., extra Meldung mit Vorschlag bei B
 
 public class BuildACTSRun {
     public static void main(String[] argv) {
-        SUTObject acts = new SUTObjectSimple(3,
+        SUTObject acts = new SUTObjectComplex(3,
                 SUTObject.IncludeValuesForConstraints.INCLUDE_VALUES_FOR_CONSTRAINTS);
 
 
@@ -72,7 +34,14 @@ public class BuildACTSRun {
         System.out.println(acts.getSut());
 
 
-        /*// set the test generation profile
+        //runACTS(acts, "output/Combinations_%s.csv");
+
+        //Util.addExpectedResults(outputString, Tool.ACTS);
+
+    }
+
+    public static void runACTS(SUTObjectAbstract acts, String outputString) {
+        // set the test generation profile
         // randomize don't care values
         TestGenProfile.instance().setRandstar(TestGenProfile.ON);
         // not ignoring constraints
@@ -92,17 +61,13 @@ public class BuildACTSRun {
         TestSetWrapper wrapper = new TestSetWrapper(ts, acts.getSut());
 
         // print into the standard out
-        wrapper.outputInCSVFormat();
+        // wrapper.outputInCSVFormat();
 
         // print into a file
 
-        String outputString = String.format("output/Combinations_%s.csv", Util.getDatetimeStamp());
+        String.format(outputString, Util.getDatetimeStamp());
         wrapper.outputInCSVFormat(outputString);
-
-        Util.addExpectedResults(outputString, Tool.ACTS);*/
-
     }
-
 
 
 }

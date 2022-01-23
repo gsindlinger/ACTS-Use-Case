@@ -1,0 +1,1 @@
+t = 2, Summe = 106Einzeln: [23, 27, 30, 26]t = 3, Summe = 269Einzeln: [79, 102, 56, 32]t = 4, Summe = 664Einzeln: [264, 312, 56, 32]t = 5, Summe = 1574Einzeln: [677, 809, 56, 32]t = 6, Summe = 2681Einzeln: [1648, 945, 56, 32]

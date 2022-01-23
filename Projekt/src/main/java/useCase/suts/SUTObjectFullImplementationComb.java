@@ -3,6 +3,7 @@ package useCase.suts;
 import edu.uta.cse.fireeye.common.Constraint;
 import edu.uta.cse.fireeye.common.Parameter;
 import edu.uta.cse.fireeye.common.SUT;
+import useCase.BuildACTSRun;
 import useCase.BuildPICTRun;
 import util.Util;
 
@@ -60,7 +61,7 @@ public class SUTObjectFullImplementationComb extends SUTObjectAbstract {
                 params = new ArrayList();
                 params.add(paymentBeginning);
                 Constraint cPAYBEG1 = new Constraint(
-                        "Zuzahlung_zu_Beginn = 0 || Zuzahlung_zu_Beginn = 2000", params);
+                        "Zuzahlung_zu_Beginn = 0 || Zuzahlung_zu_Beginn = 99 ||Zuzahlung_zu_Beginn = 2000", params);
                 sut.addConstraint(cPAYBEG1);
 
                 //Amount 40b
@@ -76,7 +77,7 @@ public class SUTObjectFullImplementationComb extends SUTObjectAbstract {
                 params.add(tariff);
 
                 Constraint cAM363_1 = new Constraint(
-                        "Beitrag_363= 0 || Beitrag_363= 2000 || Beitrag_363= 4068", params);
+                        "Beitrag_363= 0 || Beitrag_363= 2068 || Beitrag_363= 4068", params);
                 sut.addConstraint(cAM363_1);
                 break;
             case PENSIONSKASSE:
@@ -121,7 +122,7 @@ public class SUTObjectFullImplementationComb extends SUTObjectAbstract {
                 params.add(tariff);
 
                 Constraint cAM363_2 = new Constraint(
-                        "Beitrag_363= 0 || Beitrag_363= 2000 || Beitrag_363= 4068", params);
+                        "Beitrag_363= 0 || Beitrag_363= 2068 || Beitrag_363= 4068", params);
                 sut.addConstraint(cAM363_2);
 
                 break;
@@ -233,28 +234,41 @@ public class SUTObjectFullImplementationComb extends SUTObjectAbstract {
     }
 
 
-    public static void runFullCombinations() {
-        int interactionParameter = 3;
+    public static void runFullCombinations(int interactionParameter, boolean isACTS) {
+        String finalOutputPath = "";
+        String tempOutputPath = "";
         String execPath = "pict.exe";
         String inputPath = "output/test.txt";
-        String tempOutputPath = String.format("output/Full_Combination_Export/Temp_PICT_t_%d.csv", interactionParameter);
-        String finalOutputPath = String.format("output/Full_Combination_Export/PICT_t_%d.csv", interactionParameter);
+        if(isACTS) {
+            tempOutputPath = String.format("output/Full_Combination_Export/Temp_ACTS_t_%d.csv", interactionParameter);
+            finalOutputPath = String.format("output/Full_Combination_Export/ACTS_t_%d.csv", interactionParameter);
+        }else{
+            tempOutputPath = String.format("output/Full_Combination_Export/Temp_PICT_t_%d.csv", interactionParameter);
+            finalOutputPath = String.format("output/Full_Combination_Export/PICT_t_%d.csv", interactionParameter);
+        }
+
+
         new File(finalOutputPath).delete();
 
 
         for (int i = 0; i < 4; i++) {
-            SUTObjectFullImplementationComb sutObject = new SUTObjectFullImplementationComb(interactionParameter, i);
+            SUTObjectAbstract sutObject = new SUTObjectFullImplementationComb(interactionParameter, i);
             SUT sut = sutObject.getSut();
             System.out.println(sut);
-            BuildPICTRun.createPictModelFromSut(sut, inputPath);
 
-            long start = System.currentTimeMillis();
-            BuildPICTRun.runPict(execPath, inputPath, tempOutputPath, interactionParameter);
-            long finish = System.currentTimeMillis();
-            long timeElapsed = finish - start;
-            //System.out.println("Running Time for interaction parameter t = " + interactionParameter + ": " + timeElapsed);
-            Util.removeTxt(inputPath);
-            Util.tab2CommaSeparatedCSV(tempOutputPath);
+            if(isACTS) {
+                BuildACTSRun.runACTS(sutObject, tempOutputPath);
+                Util.removeNLinesFromTxt(tempOutputPath, 6);
+            }else{
+                BuildPICTRun.createPictModelFromSut(sut, inputPath);
+                long start = System.currentTimeMillis();
+                BuildPICTRun.runPict(execPath, inputPath, tempOutputPath, interactionParameter);
+                long finish = System.currentTimeMillis();
+                long timeElapsed = finish - start;
+                //System.out.println("Running Time for interaction parameter t = " + interactionParameter + ": " + timeElapsed);
+                Util.removeTxt(inputPath);
+                Util.tab2CommaSeparatedCSV(tempOutputPath);
+            }
 
             try {
                 boolean firstIteration;
@@ -263,7 +277,8 @@ public class SUTObjectFullImplementationComb extends SUTObjectAbstract {
                 }else {
                     firstIteration = false;
                 }
-                Util.appendImplementationFile(finalOutputPath, tempOutputPath, sutObject.getStringFromCombinationsList(i), firstIteration);
+                Util.appendImplementationFile(finalOutputPath, tempOutputPath, ((SUTObjectFullImplementationComb)sutObject).
+                        getStringFromCombinationsList(i), firstIteration);
                 new File(tempOutputPath).delete();
             } catch (IOException e) {
                 e.printStackTrace();

@@ -1,0 +1,42 @@
+[System]
+Name: EasyWeb Simple Amounts
+
+[Parameter]
+Tarif (enum) : AREven, AROdd, FR20, HR20, PK10, RVx
+Zuzahlung_zu_Beginn (int) : 0, 2000, 99, 299, 5001, 1000001
+Beitrag_40b (int) : 0, 2148, 2149
+Beitrag_363 (int) : 0, 2068, 4068
+Durchfuehrungsweg (enum) : Direktversicherung, Direktzusage, Pensionskasse
+Art_der_Rueckdeckung (enum) : keine, Rueckdeckungsversicherung, Unterstuetzungskasse
+Beitrag (int) : 0, 600, 299, 5000, 24, 599, 125001
+
+[Relation]
+R1 : (Tarif, Zuzahlung_zu_Beginn, Beitrag_40b, Beitrag_363, Durchfuehrungsweg, Art_der_Rueckdeckung, Beitrag, 2)
+
+[Constraint]
+Tarif = "AROdd" => Durchfuehrungsweg = "Direktzusage" && Art_der_Rueckdeckung = "Rueckdeckungsversicherung"
+Tarif = "FR20" => Durchfuehrungsweg = "Direktversicherung" || Art_der_Rueckdeckung = "Rueckdeckungsversicherung"
+Tarif = "RVx" => Durchfuehrungsweg = "Direktzusage"
+Tarif = "PK10" => Durchfuehrungsweg = "Pensionskasse"
+Durchfuehrungsweg = "Pensionskasse" => Tarif = "PK10" && Art_der_Rueckdeckung = "keine"
+Art_der_Rueckdeckung = "Unterstuetzungskasse" => Beitrag_40b = 0 && Beitrag_363 = 0 && Zuzahlung_zu_Beginn = 0
+Durchfuehrungsweg = "Direktversicherung" => Art_der_Rueckdeckung = "keine"
+Durchfuehrungsweg = "Direktzusage" => (Art_der_Rueckdeckung = "Unterstuetzungskasse" || Art_der_Rueckdeckung = "Rueckdeckungsversicherung")
+Durchfuehrungsweg = "Direktzusage" && Art_der_Rueckdeckung = "Rueckdeckungsversicherung" => Beitrag_40b = 0 && Beitrag_363 = 0
+Art_der_Rueckdeckung = "Unterstuetzungskasse" => Beitrag_40b = 0 && Beitrag_363 = 0 && Zuzahlung_zu_Beginn = 0
+Durchfuehrungsweg = "Direktversicherung" => Beitrag = 0 || Beitrag = 599 || Beitrag = 600
+Durchfuehrungsweg = "Pensionskasse" => Beitrag = 0 || Beitrag = 299 || Beitrag = 599 || Beitrag = 600
+Durchfuehrungsweg = "Direktzusage" && Art_der_Rueckdeckung = "Unterstuetzungskasse" && (Tarif = "AREven" || Tarif = "HR20") => Beitrag = 0 || Beitrag = 599 ||Beitrag = 600 || Beitrag = 125001
+Durchfuehrungsweg = "Direktzusage" && Art_der_Rueckdeckung = "Unterstuetzungskasse" && Tarif = "FR20" => Beitrag = 0 || Beitrag = 299 ||Beitrag = 600 || Beitrag = 125001
+Durchfuehrungsweg = "Direktzusage" && Art_der_Rueckdeckung = "Unterstuetzungskasse" && Tarif = "RVx" => Beitrag = 0 || Beitrag = 299 || Beitrag = 24 ||Beitrag = 600 || Beitrag = 125001
+Durchfuehrungsweg = "Direktzusage" && Art_der_Rueckdeckung = "Rueckdeckungsversicherung" && (Tarif = "AREven" || Tarif = "HR20" || Tarif = "AROdd") => Beitrag = 0 || Beitrag = 599 ||Beitrag = 600 || Beitrag = 125001
+Durchfuehrungsweg = "Direktzusage" && Art_der_Rueckdeckung = "Rueckdeckungsversicherung" && Tarif = "RVx" => Beitrag = 0 || Beitrag = 299 || Beitrag = 5000 || Beitrag = 125001
+Durchfuehrungsweg = "Direktversicherung" => Zuzahlung_zu_Beginn = 0 || Zuzahlung_zu_Beginn = 99 || Zuzahlung_zu_Beginn = 2000
+Durchfuehrungsweg = "Pensionskasse" => Zuzahlung_zu_Beginn = 0 || Zuzahlung_zu_Beginn = 299 || Zuzahlung_zu_Beginn = 2000
+Durchfuehrungsweg = "Direktzusage" && Art_der_Rueckdeckung = "Rueckdeckungsversicherung" && (Tarif = "AREven" || Tarif = "HR20" || Tarif = "AROdd") => Zuzahlung_zu_Beginn= 0 || Zuzahlung_zu_Beginn= 2000 || Zuzahlung_zu_Beginn= 1000001
+Durchfuehrungsweg = "Direktzusage" && Art_der_Rueckdeckung = "Rueckdeckungsversicherung" && Tarif = "RVx" => Zuzahlung_zu_Beginn= 0 || Zuzahlung_zu_Beginn= 2000 ||Zuzahlung_zu_Beginn= 299 ||Zuzahlung_zu_Beginn= 5001
+Durchfuehrungsweg = "Direktversicherung" => Beitrag_40b= 0 || Beitrag_40b= 2148 || Beitrag_40b= 2149
+Durchfuehrungsweg = "Pensionskasse" => Beitrag_40b= 0 || Beitrag_40b= 2148 || Beitrag_40b= 2149
+Durchfuehrungsweg = "Direktversicherung" => Beitrag_363= 0 || Beitrag_363= 2068 || Beitrag_363= 4068
+Durchfuehrungsweg = "Pensionskasse" => Beitrag_363= 0 || Beitrag_363= 2068 || Beitrag_363= 4068
+

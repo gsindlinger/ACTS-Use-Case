@@ -1,0 +1,46 @@
+Model EasyWeb
+
+Parameters:
+Tarif: { AREven, AROdd, FR20, HR20, PK10, RVx };
+Durchfuehrungsweg: { Direktversicherung, Direktzusage, Pensionskasse };
+Art_der_Rueckdeckung: { keine, Rueckdeckungskasse, Unterstuetzungskasse };
+Finanzierungsart: { AG-finanziert, AN-finanziert, Mischfinanziert };
+Zuzahlung_zu_Beginn: { 0, 2000, 200, 6000, 1200000 };
+Beitrag_40b: { 0, 2148, 2149 };
+Beitrag_363: { 0, 2000, 2400 };
+AN_Beitrag: { 0, 208, 209, 600, 2600, 2417, 130000 };
+AG_Beitrag: { 0, 24, 208, 209, 600, 2600, 2416, 130000 };
+
+Constraints:
+# Tarif = AROdd => Durchfuehrungsweg = Direktzusage  AND  Art_der_Rueckdeckung = Rueckdeckungskasse #
+# Tarif = FR20 => Durchfuehrungsweg = Direktversicherung #
+# Tarif = RVx => Durchfuehrungsweg = Direktzusage #
+# Tarif = PK10 => Durchfuehrungsweg = Pensionskasse #
+# Durchfuehrungsweg = Pensionskasse => Tarif = PK10  AND  Art_der_Rueckdeckung = keine #
+# Finanzierungsart = AG-finanziert => AN_Beitrag = 0 #
+# Finanzierungsart = AN-finanziert => AG_Beitrag = 0 #
+# Art_der_Rueckdeckung = Unterstuetzungskasse => Beitrag_40b = 0  AND  Beitrag_363 = 0  AND  Zuzahlung_zu_Beginn = 0 #
+# Durchfuehrungsweg = Direktversicherung => Art_der_Rueckdeckung = keine #
+# Durchfuehrungsweg = Direktzusage => (Art_der_Rueckdeckung = Unterstuetzungskasse  OR  Art_der_Rueckdeckung = Rueckdeckungskasse) #
+# Durchfuehrungsweg = Direktzusage => Finanzierungsart = AG-finanziert  AND  Beitrag_40b = 0  AND  Beitrag_363 = 0 #
+# Art_der_Rueckdeckung = Unterstuetzungskasse => Finanzierungsart != Mischfinanziert  AND  Beitrag_40b = 0  AND  Beitrag_363 = 0  AND  Zuzahlung_zu_Beginn = 0 #
+# Art_der_Rueckdeckung = Rueckdeckungskasse => Finanzierungsart = AG-finanziert  AND  Beitrag_40b = 0  AND  Beitrag_363 = 0 #
+# Durchfuehrungsweg = Direktversicherung => AN_Beitrag = 0  OR  AN_Beitrag = 208  OR  AN_Beitrag = 209  OR  AN_Beitrag = 600  OR  AN_Beitrag = 2600  OR  AN_Beitrag = 2417 #
+# Durchfuehrungsweg = Pensionskasse => AN_Beitrag = 0  OR  AN_Beitrag = 208  OR  AN_Beitrag = 209  OR  AN_Beitrag = 600  OR  AN_Beitrag = 2600  OR  AN_Beitrag = 2417 #
+# Durchfuehrungsweg = Direktzusage  AND  Art_der_Rueckdeckung = Unterstuetzungskasse  AND  (Tarif = AREven  OR  Tarif = HR20) => AN_Beitrag = 0  OR  AN_Beitrag = 209  OR AN_Beitrag = 600  OR  AN_Beitrag = 2600  OR  AN_Beitrag = 130000 #
+# Durchfuehrungsweg = Direktzusage  AND  Art_der_Rueckdeckung = Unterstuetzungskasse  AND  Tarif = RVx => AN_Beitrag = 0  OR  AN_Beitrag = 209  OR AN_Beitrag = 600  OR  AN_Beitrag = 130000 #
+# Durchfuehrungsweg = Direktversicherung => AG_Beitrag = 0  OR  AG_Beitrag = 208  OR  AG_Beitrag = 209  OR  AG_Beitrag = 600  OR  AG_Beitrag = 2600  OR  AG_Beitrag = 2416 #
+# Durchfuehrungsweg = Pensionskasse => AG_Beitrag = 0  OR  AG_Beitrag = 208  OR  AG_Beitrag = 209  OR  AG_Beitrag = 600  OR  AG_Beitrag = 2600  OR  AG_Beitrag = 2416 #
+# Durchfuehrungsweg = Direktzusage  AND  Art_der_Rueckdeckung = Unterstuetzungskasse  AND  (Tarif = AREven  OR  Tarif = HR20) => AG_Beitrag = 0  OR  AG_Beitrag = 209  OR AG_Beitrag = 600  OR  AG_Beitrag = 2600  OR  AG_Beitrag = 130000 #
+# Durchfuehrungsweg = Direktzusage  AND  Art_der_Rueckdeckung = Unterstuetzungskasse  AND  Tarif = RVx => AG_Beitrag = 0  OR  AG_Beitrag = 209  OR AG_Beitrag = 600  OR  AG_Beitrag = 130000 #
+# Durchfuehrungsweg = Direktzusage  AND  Art_der_Rueckdeckung = Rueckdeckungskasse  AND  (Tarif = AREven  OR  Tarif = HR20  OR  Tarif = AROdd) => AG_Beitrag = 0  OR  AG_Beitrag = 209  OR AG_Beitrag = 600  OR  AG_Beitrag = 2600  OR  AG_Beitrag = 130000 #
+# Durchfuehrungsweg = Direktzusage  AND  Art_der_Rueckdeckung = Rueckdeckungskasse  AND  Tarif = RVx => AG_Beitrag = 0  OR  AG_Beitrag = 209  OR AG_Beitrag = 600  OR  AG_Beitrag = 2600  OR  AG_Beitrag = 130000  OR  AG_Beitrag = 24 #
+# Durchfuehrungsweg = Direktversicherung => Zuzahlung_zu_Beginn = 0  OR  Zuzahlung_zu_Beginn = 2000 #
+# Durchfuehrungsweg = Pensionskasse => Zuzahlung_zu_Beginn = 0  OR  Zuzahlung_zu_Beginn = 200  OR  Zuzahlung_zu_Beginn = 2000 #
+# Durchfuehrungsweg = Direktzusage  AND  Art_der_Rueckdeckung = Rueckdeckungskasse  AND  (Tarif = AREven  OR  Tarif = HR20  OR  Tarif = AROdd) => Zuzahlung_zu_Beginn= 0  OR  Zuzahlung_zu_Beginn= 2000  OR  Zuzahlung_zu_Beginn= 1200000 #
+# Durchfuehrungsweg = Direktzusage  AND  Art_der_Rueckdeckung = Rueckdeckungskasse  AND  Tarif = RVx => Zuzahlung_zu_Beginn= 0  OR  Zuzahlung_zu_Beginn= 2000  OR Zuzahlung_zu_Beginn= 200  OR Zuzahlung_zu_Beginn= 6000 #
+# Durchfuehrungsweg = Direktversicherung => Beitrag_40b= 0  OR  Beitrag_40b= 2148  OR  Beitrag_40b= 2149 #
+# Durchfuehrungsweg = Pensionskasse => Beitrag_40b= 0  OR  Beitrag_40b= 2148  OR  Beitrag_40b= 2149 #
+# Durchfuehrungsweg = Direktversicherung => Beitrag_363= 0  OR  Beitrag_363= 2000  OR  Beitrag_363= 2400 #
+# Durchfuehrungsweg = Pensionskasse => Beitrag_363= 0  OR  Beitrag_363= 2000  OR  Beitrag_363= 2400 #
+

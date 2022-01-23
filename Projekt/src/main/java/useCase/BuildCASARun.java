@@ -18,21 +18,15 @@ public class BuildCASARun {
 
 
         String execPath = "casa.exe";
-        String inputPath = "output/casa_model_new.txt";
-        String constraintPath = "output/casa_constraints.txt";
+        String inputPath = "output/CASA_Export/casa_model.txt";
+        String constraintPath = "output/CASA_Export/casa_constraints.txt";
         String outputString = "";
 
-        int [][] startingBordersForSimAnnealing = new int[][]{new int[]{25,50},
-                                                            new int[]{100,135},
-                                                            new int[]{170,230},
-                                                            new int[]{230,330},
-                                                            new int[]{250,350}};
-
-        ArrayList<OptionalDouble> countTestCases = new ArrayList<>();
-        ArrayList<OptionalDouble> countIterationTime = new ArrayList<>();
-        ArrayList<OptionalDouble> tPlus1Coverage = new ArrayList<>();
-        ArrayList<OptionalDouble> variableValueCoverage = new ArrayList<>();
-        ArrayList<OptionalDouble> p_t_CompletenessCoverage = new ArrayList<>();
+        int [][] startingBordersForSimAnnealing = new int[][]{new int[]{30,80},
+                                                            new int[]{120,200},
+                                                            new int[]{230,350},
+                                                            new int[]{350,520},
+                                                            new int[]{350,550}};
 
 
         for(int i = 2; i < 7; i++) {
@@ -43,7 +37,7 @@ public class BuildCASARun {
             ArrayList<Float> currentVariableValueCoverage = new ArrayList<>();
             ArrayList<Float> currentP_T_CompletenessCoverage = new ArrayList<>();
 
-            for(int j = 0; j < 50; j++) {
+            for(int j = 0; j < 30; j++) {
                 ArrayList<String> command = new ArrayList<>();
 
                 CASAObject casa = new CASAObject(new SUTObjectSimple(i, SUTObject.IncludeValuesForConstraints.INCLUDE_VALUES_FOR_CONSTRAINTS));
@@ -151,7 +145,7 @@ public class BuildCASARun {
         ProcessBuilder builder = new ProcessBuilder(command);
 
         System.out.println("Starting command: " + command.toString());
-        builder.redirectOutput(new File("output/CASA_output.txt"));
+        builder.redirectOutput(new File("output/CASA_Export/CASA_Command_Line_Output.txt"));
         Process p = null;
         try {
             p = builder.start();

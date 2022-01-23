@@ -7,6 +7,7 @@ import edu.uta.cse.fireeye.common.SUT;
 import edu.uta.cse.fireeye.service.constraint.ConstraintManager;
 import edu.uta.cse.fireeye.service.engine.RelationManager;
 import useCase.suts.SUTObject;
+import useCase.suts.SUTObjectComplex;
 import useCase.suts.SUTObjectSimple;
 import util.Util;
 

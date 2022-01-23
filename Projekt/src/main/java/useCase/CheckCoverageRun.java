@@ -17,8 +17,8 @@ import java.util.ArrayList;
 public class CheckCoverageRun {
     public static void main(String[] args) {
 
-        for(int i = 2; i < 6; i++) {
-            int interactionParameter = i+1;
+        for(int i = 5; i < 7; i++) {
+            int interactionParameter = i;
 
             String fileName = "";
 
@@ -40,6 +40,12 @@ public class CheckCoverageRun {
 
     }
 
+    /**
+     *
+     * @param interactionParameter
+     * @param fileName
+     * @return List with t-way coverage, ratio of all variable-value-combinations and (p-t)-completeness
+     */
     public static ArrayList<Float> checkCoverage(int interactionParameter, String fileName) {
 
         ArrayList<Float> saveResultsList = new ArrayList<>();
@@ -66,7 +72,10 @@ public class CheckCoverageRun {
 
         // check coverage with mixed strength "-1"
         CoverageCheckerModified checker = new CoverageCheckerModified(sut.getExistingTestSet(), sut, -1);
+
+
         System.out.println("Testing Interaction parameter t = " + interactionParameter);
+        System.out.println("Count of coverable tuples: " + checker.getTotalCountOfCoverableTuples());
         if (checker.check()) {
             System.out.println("Complete test set.");
         } else {

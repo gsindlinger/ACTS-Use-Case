@@ -68,8 +68,29 @@ public class Util {
         return sdf.format(myDate);
     }
 
-
-    /**
+    public static void removeNLinesFromTxt(String fileName, int numberOfLines) {
+        String lineSep = System.getProperty("line.separator");
+        String output = "";
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(fileName));
+            String line = null;
+            int i = 0;
+            while ((line = br.readLine()) != null) {
+                if (i >= numberOfLines) {
+                    output += line + lineSep;
+                }
+                i++;
+            }
+            br.close();
+            FileWriter fw = new FileWriter(fileName, false); //false to replace file contents, your code has true for append to file contents
+            fw.write(output);
+            fw.flush();
+            fw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+        /**
      * Adds the expected result with respect to the BBG-border which is given at {@link SUTObjectComplex} class.
      * Adapted from: https://stackoverflow.com/questions/34590971/java-append-new-column-to-csv-file
      * <p>
@@ -199,7 +220,9 @@ public class Util {
         String line = null;
         int i = 0;
         while ((line = br.readLine()) != null) {
-            if(i > 0 || firstIteration == true) {
+            if(firstIteration && i == 0) {
+                output += "Durchführungsweg, Art der Rückdeckung," + line + System.lineSeparator();
+            }else if(i > 0) {
                 output += currentImplementation + "," + line + System.lineSeparator();
             }
             i++;

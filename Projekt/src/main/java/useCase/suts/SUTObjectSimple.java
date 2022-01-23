@@ -41,7 +41,7 @@ public class SUTObjectSimple extends SUTObject {
 
         //Values for Amount § 363
         amount363.addValue("0");
-        amount363.addValue("2000");
+        amount363.addValue("2068");
         amount363.addValue("4068");
         amount363.setType(Parameter.PARAM_TYPE_INT);
 
@@ -191,11 +191,11 @@ public class SUTObjectSimple extends SUTObject {
             params.add(tariff);
 
             Constraint cAM363_1 = new Constraint("Durchfuehrungsweg = \"Direktversicherung\" => " +
-                    "Beitrag_363= 0 || Beitrag_363= 2000 || Beitrag_363= 2400",  params);
+                    "Beitrag_363= 0 || Beitrag_363= 2068 || Beitrag_363= 4068",  params);
             sut.addConstraint(cAM363_1);
 
             Constraint cAM363_2 = new Constraint("Durchfuehrungsweg = \"Pensionskasse\" => " +
-                    "Beitrag_363= 0 || Beitrag_363= 2000 || Beitrag_363= 2400",  params);
+                    "Beitrag_363= 0 || Beitrag_363= 2068 || Beitrag_363= 4068",  params);
             sut.addConstraint(cAM363_2);
         }
 

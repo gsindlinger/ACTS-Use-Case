@@ -1,0 +1,150 @@
+\chapter{Anhang}
+
+\section{Bedingungen Basis-System}\label{sec:bedingungenSimple}
+
+\footnotesize
+
+\begin{itemize}
+\item Tarif = 'AROdd' $\Rightarrow$ Durchführungsweg = 'Direktzusage' \&\& Art der Rückdeckung = 'Rückdeckungsversicherung'
+\item Tarif = 'FR20' $\Rightarrow$ Durchführungsweg = 'Direktversicherung' || Art der Rückdeckung = 'Rückdeckungsversicherung'
+\item Tarif = 'RVx' $\Rightarrow$ Durchführungsweg = 'Direktzusage'
+\item Tarif = 'PK10' $\Rightarrow$ Durchführungsweg = 'Pensionskasse'
+\item Durchführungsweg = 'Pensionskasse' $\Rightarrow$ Tarif = 'PK10' \&\& Art der Rückdeckung = 'keine'
+\item Art der Rückdeckung = 'Unterstützungskasse' $\Rightarrow$ Verw. Beitrag §~40~b = 0 \&\& Verw. Beitrag §~3~Nr.63 = 0 \&\& Zuzahlung zu Beginn = 0
+\item Durchführungsweg = 'Direktversicherung' $\Rightarrow$ Art der Rückdeckung = 'keine'
+\item Durchführungsweg = 'Direktzusage' $\Rightarrow$ (Art der Rückdeckung = 'Unterstützungskasse' || Art der Rückdeckung = 'Rückdeckungsversicherung')
+\item Durchführungsweg = 'Direktzusage' \&\& Art der Rückdeckung = 'Rückdeckungsversicherung' $\Rightarrow$ Verw. Beitrag §~40~b = 0 \&\& Verw. Beitrag §~3~Nr.63 = 0
+\item Art der Rückdeckung = 'Unterstützungskasse' $\Rightarrow$ Verw. Beitrag §~40~b = 0 \&\& Verw. Beitrag §~3~Nr.63 = 0 \&\& Zuzahlung zu Beginn = 0
+\item Durchführungsweg = 'Direktversicherung' $\Rightarrow$ Beitrag = 0 || Beitrag = 599 || Beitrag = 600
+\item Durchführungsweg = 'Pensionskasse' $\Rightarrow$ Beitrag = 0 || Beitrag = 299 || Beitrag = 599 || Beitrag = 600
+\item Durchführungsweg = 'Direktzusage' \&\& Art der Rückdeckung = 'Unterstützungskasse' \&\& (Tarif = 'AREven' || Tarif = 'HR20') $\Rightarrow$ Beitrag = 0 || Beitrag = 599 ||Beitrag = 600 || Beitrag = 125001
+\item Durchführungsweg = 'Direktzusage' \&\& Art der Rückdeckung = 'Unterstützungskasse' \&\& Tarif = 'FR20' $\Rightarrow$ Beitrag = 0 || Beitrag = 299 ||Beitrag = 600 || Beitrag = 125001
+\item Durchführungsweg = 'Direktzusage' \&\& Art der Rückdeckung = 'Unterstützungskasse' \&\& Tarif = 'RVx' $\Rightarrow$ Beitrag = 0 || Beitrag = 299 || Beitrag = 24 ||Beitrag = 600 || Beitrag = 125001
+\item Durchführungsweg = 'Direktzusage' \&\& Art der Rückdeckung = 'Rückdeckungsversicherung' \&\& (Tarif = 'AREven' || Tarif = 'HR20' || Tarif = 'AROdd') $\Rightarrow$ Beitrag = 0 || Beitrag = 599 ||Beitrag = 600 || Beitrag = 125001
+\item Durchführungsweg = 'Direktzusage' \&\& Art der Rückdeckung = 'Rückdeckungsversicherung' \&\& Tarif = 'RVx' $\Rightarrow$ Beitrag = 0 || Beitrag = 299 || Beitrag = 5000 || Beitrag = 125001
+\item Durchführungsweg = 'Direktversicherung' $\Rightarrow$ Zuzahlung zu Beginn = 0 || Zuzahlung zu Beginn = 99 || Zuzahlung zu Beginn = 2000
+\item Durchführungsweg = 'Pensionskasse' $\Rightarrow$ Zuzahlung zu Beginn = 0 || Zuzahlung zu Beginn = 299 || Zuzahlung zu Beginn = 2000
+\item Durchführungsweg = 'Direktzusage' \&\& Art der Rückdeckung = 'Rückdeckungsversicherung' \&\& (Tarif = 'AREven' || Tarif = 'HR20' || Tarif = 'AROdd') $\Rightarrow$ Zuzahlung zu Beginn= 0 || Zuzahlung zu Beginn= 2000 || Zuzahlung zu Beginn= 1000001
+\item Durchführungsweg = 'Direktzusage' \&\& Art der Rückdeckung = 'Rückdeckungsversicherung' \&\& Tarif = 'RVx' $\Rightarrow$ Zuzahlung zu Beginn= 0 || Zuzahlung zu Beginn= 2000 ||Zuzahlung zu Beginn= 299 ||Zuzahlung zu Beginn= 5001
+\item Durchführungsweg = 'Direktversicherung' $\Rightarrow$ Verw. Beitrag §~40~b= 0 || Verw. Beitrag §~40~b= 2148 || Verw. Beitrag §~40~b= 2149
+\item Durchführungsweg = 'Pensionskasse' $\Rightarrow$ Verw. Beitrag §~40~b= 0 || Verw. Beitrag §~40~b= 2148 || Verw. Beitrag §~40~b= 2149
+\item Durchführungsweg = 'Direktversicherung' $\Rightarrow$ Verw. Beitrag §~3~Nr.63= 0 || Verw. Beitrag §~3~Nr.63= 2068 || Verw. Beitrag §~3~Nr.63= 4068
+\item Durchführungsweg = 'Pensionskasse' $\Rightarrow$ Verw. Beitrag §~3~Nr.63= 0 || Verw. Beitrag §~3~Nr.63= 2068 || Verw. Beitrag §~3~Nr.63= 4068
+\end{itemize}
+
+\normalsize
+
+\section{Bedingungen Erweitertes System}\label{sec:bedingungenComplex}
+
+\footnotesize
+
+\begin{itemize}
+\item Tarif = 'AROdd' $\Rightarrow$ Durchführungsweg = 'Direktzusage' \&\& Art der Rückdeckung = 'Rückdeckungsversicherung'
+\item Tarif = 'FR20' $\Rightarrow$ Durchführungsweg = 'Direktversicherung' || Art der Rückdeckung = 'Rückdeckungsversicherung'
+\item Tarif = 'RVx' $\Rightarrow$ Durchführungsweg = 'Direktzusage'
+\item Tarif = 'PK10' $\Rightarrow$ Durchführungsweg = 'Pensionskasse'
+\item Durchführungsweg = 'Pensionskasse' $\Rightarrow$ Tarif = 'PK10' \&\& Art der Rückdeckung = 'keine'
+\item Art der Rückdeckung = 'Unterstützungskasse' $\Rightarrow$ Verw. Beitrag §~40~b = 0 \&\& Verw. Beitrag §~3~Nr.63 = 0 \&\& Zuzahlung zu Beginn = 0
+\item Durchführungsweg = 'Direktversicherung' $\Rightarrow$ Art der Rückdeckung = 'keine'
+\item Durchführungsweg = 'Direktzusage' $\Rightarrow$ (Art der Rückdeckung = 'Unterstützungskasse' || Art der Rückdeckung = 'Rückdeckungsversicherung')
+\item Finanzierungsart = 'AG-finanziert' $\Rightarrow$ AN-Beitrag = 0
+\item Finanzierungsart = 'AN-finanziert' $\Rightarrow$ AG-Beitrag = 0
+\item Art der Rückdeckung = 'Unterstützungskasse' $\Rightarrow$ Finanzierungsart != 'Mischfinanziert' \&\& Verw. Beitrag §~40~b = 0 \&\& Verw. Beitrag §~3~Nr.63 = 0 \&\& Zuzahlung zu Beginn = 0
+\item Art der Rückdeckung = 'Rückdeckungsversicherung' $\Rightarrow$ Finanzierungsart = 'AG-finanziert' \&\& Verw. Beitrag §~40~b = 0 \&\& Verw. Beitrag §~3~Nr.63 = 0
+\item Durchführungsweg = 'Direktversicherung' $\Rightarrow$ AN-Beitrag = 0 || AN-Beitrag = 599 || AN-Beitrag = 600 || AN-Beitrag = 1500
+\item Durchführungsweg = 'Pensionskasse' $\Rightarrow$ AN-Beitrag = 0 || AN-Beitrag = 299 || AN-Beitrag = 599 || AN-Beitrag = 600 || AN-Beitrag = 1500
+\item Durchführungsweg = 'Direktzusage' \&\& Art der Rückdeckung = 'Unterstützungskasse' \&\& (Tarif = 'AREven' || Tarif = 'HR20') $\Rightarrow$ AN-Beitrag = 0 || AN-Beitrag = 599 ||AN-Beitrag = 600 || AN-Beitrag = 125001
+\item Durchführungsweg = 'Direktzusage' \&\& Art der Rückdeckung = 'Unterstützungskasse' \&\& Tarif = 'FR20' $\Rightarrow$ AN-Beitrag = 0 || AN-Beitrag = 299 ||AN-Beitrag = 600 || AN-Beitrag = 125001
+\item Durchführungsweg = 'Direktzusage' \&\& Art der Rückdeckung = 'Unterstützungskasse' \&\& Tarif = 'RVx' $\Rightarrow$ AN-Beitrag = 0 || AN-Beitrag = 299 ||AN-Beitrag = 1500 || AN-Beitrag = 125001 || AG-Beitrag = 24
+\item Durchführungsweg = 'Direktversicherung' $\Rightarrow$ AG-Beitrag = 0 || AG-Beitrag = 599 || AG-Beitrag = 600 || AG-Beitrag = 1500
+\item Durchführungsweg = 'Pensionskasse' $\Rightarrow$ AG-Beitrag = 0 || AG-Beitrag = 299 || AG-Beitrag = 599 || AG-Beitrag = 600 || AG-Beitrag = 1500
+\item Durchführungsweg = 'Direktzusage' \&\& Art der Rückdeckung = 'Unterstützungskasse' \&\& (Tarif = 'AREven' || Tarif = 'HR20') $\Rightarrow$ AG-Beitrag = 0 || AG-Beitrag = 599 ||AG-Beitrag = 600 || AG-Beitrag = 125001
+\item Durchführungsweg = 'Direktzusage' \&\& Art der Rückdeckung = 'Unterstützungskasse' \&\& Tarif = 'FR20' $\Rightarrow$ AG-Beitrag = 0 || AG-Beitrag = 299 ||AG-Beitrag = 600 || AG-Beitrag = 125001
+\item Durchführungsweg = 'Direktzusage' \&\& Art der Rückdeckung = 'Unterstützungskasse' \&\& Tarif = 'RVx' $\Rightarrow$ AG-Beitrag = 0 || AG-Beitrag = 299 ||AG-Beitrag = 1500 || AG-Beitrag = 125001 || AG-Beitrag = 24
+\item Durchführungsweg = 'Direktzusage' \&\& Art der Rückdeckung = 'Rückdeckungsversicherung' \&\& (Tarif = 'AREven' || Tarif = 'HR20' || Tarif = 'AROdd') $\Rightarrow$ AG-Beitrag = 0 || AG-Beitrag = 599 ||AG-Beitrag = 600 || AG-Beitrag = 125001
+\item Durchführungsweg = 'Direktzusage' \&\& Art der Rückdeckung = 'Rückdeckungsversicherung' \&\& Tarif = 'RVx' $\Rightarrow$ AG-Beitrag = 0 || AG-Beitrag = 299 || AG-Beitrag = 1500 || AG-Beitrag = 125001
+\item Durchführungsweg = 'Direktversicherung' $\Rightarrow$ Zuzahlung zu Beginn = 0 || Zuzahlung zu Beginn = 99 || Zuzahlung zu Beginn = 2000
+\item Durchführungsweg = 'Pensionskasse' $\Rightarrow$ Zuzahlung zu Beginn = 0 || Zuzahlung zu Beginn = 299 || Zuzahlung zu Beginn = 2000
+\item Durchführungsweg = 'Direktzusage' \&\& Art der Rückdeckung = 'Rückdeckungsversicherung' \&\& (Tarif = 'AREven' || Tarif = 'HR20' || Tarif = 'AROdd') $\Rightarrow$ Zuzahlung zu Beginn= 0 || Zuzahlung zu Beginn= 2000 || Zuzahlung zu Beginn= 1000001
+\item Durchführungsweg = 'Direktzusage' \&\& Art der Rückdeckung = 'Rückdeckungsversicherung' \&\& Tarif = 'RVx' $\Rightarrow$ Zuzahlung zu Beginn= 0 || Zuzahlung zu Beginn= 299 ||Zuzahlung zu Beginn= 2000 ||Zuzahlung zu Beginn= 5001
+\item Durchführungsweg = 'Direktversicherung' $\Rightarrow$ Verw. Beitrag §~40~b= 0 || Verw. Beitrag §~40~b= 2148 || Verw. Beitrag §~40~b= 2149
+\item Durchführungsweg = 'Pensionskasse' $\Rightarrow$ Verw. Beitrag §~40~b= 0 || Verw. Beitrag §~40~b= 2148 || Verw. Beitrag §~40~b= 2149
+\item Durchführungsweg = 'Direktversicherung' $\Rightarrow$ Verw. Beitrag §~3~Nr.63= 0 || Verw. Beitrag §~3~Nr.63= 2068 || Verw. Beitrag §~3~Nr.63= 4068
+\item Durchführungsweg = 'Pensionskasse' $\Rightarrow$ Verw. Beitrag §~3~Nr.63= 0 || Verw. Beitrag §~3~Nr.63= 2068 || Verw. Beitrag §~3~Nr.63= 4068
+\end{itemize}
+
+\normalsize
+
+\section{Mögliche Werte Erweitertes System}\label{sec:äquivalenklassenComplex}
+
+\renewcommand{\tabBeitrag}{0.09\textwidth}
+\renewcommand{\arraystretch}{2.5}
+\begin{table}[!htb]
+\scriptsize
+\begin{tabular}{|M{\tabTemp}|M{\tabBeitrag}|M{\tabBeitrag}|M{\tabBeitrag}|M{\tabBeitrag}|M{\tabBeitrag}|M{\tabBeitrag}|M{\tabBeitrag}|}
+\hline
+ \cellcolor{grauinfo}Durchführungs- weg / Art der Rückdeckung&
+  \cellcolor{grauinfo}Finanz- ierung &
+  \cellcolor{grauinfo}Tarife &
+  \cellcolor{grauinfo}AN-Beitrag &
+  \cellcolor{grauinfo}AG-Beitrag &
+  \cellcolor{grauinfo}Zuzahlung zu Beginn &
+  \cellcolor{grauinfo}Verw. Beitrag §~40~b &
+  \cellcolor{grauinfo}Verw. Beitrag §~3(63) \\ \hline
+Direkt- versicherung &
+  AN,   AG, Misch &
+  AREven,   HR20, FR20 &
+  0,   599, 600, 1.500 &
+  0,   599, 600, 1.500 &
+  0,   99, 2.000 &
+  0,   2.148, 2.149 &
+  0,   2.068, 4.068 \\ \hline
+Pensionskasse &
+  AN,   AG, Misch &
+  PK10 &
+  0,   299, 599, 600, 1.500 &
+  0,   299, 599, 600, 1.500 &
+  0,   299, 2000 &
+  0,   2.148, 2.149 &
+  0,   2.068, 4.068 \\ \hline
+\multirow{3}{=}{\centering Direktzusage / Unterstützungs- kasse} &
+  \multirow{3}{=}{\centering AN, AG} &
+  AREven,   HR20 &
+  0,   599, 600, 125.001 &
+  0,   599, 600, 125.001 &
+  \multicolumn{3}{M{\tabBeitrag}|}{\multirow{3}{=}{\centering  \vspace{-1.2cm}\hspace{-3.5cm}--}} \\ \cline{3-5}
+ &
+   &
+  FR20 &
+  0,   299, 600, 125.001 &
+  0,   299, 600, 125.001 &
+  \multicolumn{3}{M{\tabBeitrag}|}{} \\ \cline{3-5}
+ &
+   &
+  RVx &
+  0,   24, 299, 1.500, 125.001 &
+  0,   24, 299, 1.500, 125.001 &
+  \multicolumn{3}{M{\tabBeitrag}|}{} \\ \hline
+\multirow{2}{=}{\centering Direktzusage / Rückdeckungs- kasse} &
+  \multirow{2}{=}{\centering AG} &
+  ARx,   HR20 &
+  \multirow{2}{=}{\centering \vspace{-0.6cm}--} &
+  0,   599, 600, 125.001 &
+  0,   2.000, 1.000.001 &
+  \multicolumn{2}{M{\tabBeitrag}|}{\multirow{2}{=}{\centering \vspace{-0.6cm}\hspace{-1.8cm}--}} \\ \cline{3-3} \cline{5-6}
+ &
+   &
+  RVx &
+   &
+  0,   299, 1.500, 125.001 &
+  0,   299, 2.000, 5.001 &
+  \multicolumn{2}{c|}{} \\ \hline
+\end{tabular}
+\normalsize
+\caption{Mögliche Werte für die verschiedenen Beitragsparameter für das Erweiterte System in Abhängigkeit des Durchführungswegs, der Art der Rückdeckung und des Tarifs.}
+\label{tab:äquivalenzklassenComplex}
+\end{table}
+\renewcommand{\arraystretch}{1.5}
+
+
+

@@ -324,6 +324,7 @@ public class CoverageCheckerModified {
                 return false;
             } else {
                 int totalCountOfCoverableTuples = this.getTotalCount(missingTuples);
+                System.out.println(totalCountOfCoverableTuples);
                 int countOfCoveredTuples = 0;
                 int numOfTests = this.ts.getNumOfTests();
 
@@ -595,6 +596,8 @@ public class CoverageCheckerModified {
                 sum++;
             }
         }
+        System.out.println("Sum: " + sum);
+        System.out.println("Paramgorups: " + getParamGroups().size());
         return (1-sum/getParamGroups().size());
     }
 

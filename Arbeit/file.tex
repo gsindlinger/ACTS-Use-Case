@@ -19,6 +19,9 @@
 \usepackage{graphicx}
 \usepackage{verbatim}
 \usepackage{tabularx}
+
+\usepackage{multirow}
+\usepackage{makecell}
 \newcolumntype{Y}{>{\centering\arraybackslash}X}
 \usepackage{booktabs}
 \usepackage[table]{xcolor}
@@ -34,6 +37,7 @@
 \usepackage{float}
 \usepackage{listings}
 \usepackage{hyperref}
+
 % Fortlaufende Fußnoten über die gesamte Arbeit 
 \usepackage{remreset}
 \usepackage{tcolorbox}
@@ -53,6 +57,7 @@
 \definecolor{editorGray}{rgb}{0.95, 0.95, 0.95}
 \definecolor{editorOcher}{rgb}{1, 0.5, 0} % #FF7F00 -> rgb(239, 169, 0)
 \definecolor{editorGreen}{rgb}{0, 0.5, 0} % #007C00 -> rgb(0, 124, 0)
+\definecolor{modGreen}{HTML}{009C1F}
 \definecolor{orange}{rgb}{1,0.45,0.13}		
 \definecolor{olive}{rgb}{0.17,0.59,0.20}
 \definecolor{brown}{rgb}{0.69,0.31,0.31}
@@ -90,6 +95,11 @@
 \newcommand{\xmark}{\ding{55}}%
 
 
+\renewcommand{\chapterautorefname}{Kapitel} 
+\renewcommand{\sectionautorefname}{Abschnitt} 
+\renewcommand{\subsectionautorefname}{Abschnitt} 
+\renewcommand{\subsubsectionautorefname}{Abschnitt} 
+
 %color in tables
 \usepackage{colortbl}
 \definecolor{Gray}{rgb}{0.80784, 0.86667, 0.90196} %dunkelblau
@@ -125,7 +135,8 @@ showstringspaces=false}
 \widowpenalty10000
 
 % Tiefe, bis zu der Überschriften in das Inhaltsverzeichnis kommen
-\setcounter{tocdepth}{3}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
 
 \pdfinfo{
   /Author (\fullname)
@@ -189,7 +200,7 @@ pdfborder=0 0 0	% keine Box um die Links!
 
 \mainmatter
 % Einleitung
-\input{sections/00_abstract}
+%\input{sections/00_abstract}
 \input{sections/01_introduction}
 \input{sections/03_methods}
 \input{sections/04_use_case}
@@ -199,7 +210,7 @@ pdfborder=0 0 0	% keine Box um die Links!
 
 \appendix
 % hier Anhänge einbinden
-%\input{sections/sources}
+\input{sections/07_sources}
 
 \normalsize
 

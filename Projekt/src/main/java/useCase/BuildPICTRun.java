@@ -5,6 +5,7 @@ import edu.uta.cse.fireeye.common.Parameter;
 import edu.uta.cse.fireeye.common.SUT;
 import edu.uta.cse.fireeye.service.constraint.ConstraintManager;
 import useCase.suts.SUTObject;
+import useCase.suts.SUTObjectComplex;
 import useCase.suts.SUTObjectSimple;
 import util.Util;
 
@@ -27,7 +28,7 @@ public class BuildPICTRun {
             int interactionParameter = i;
             String execPath = "pict.exe";
             String inputPath = "output/test.txt";
-            String outputPath = String.format("output/PICT_Export/t_%d.csv",interactionParameter);
+            String outputPath = String.format("output/PICT_Export/Complex_System/t_%d.csv",interactionParameter);
 
             SUT sut = new SUTObjectSimple(interactionParameter, SUTObject.IncludeValuesForConstraints.INCLUDE_VALUES_FOR_CONSTRAINTS).getSut();
             createPictModelFromSut(sut, inputPath);
