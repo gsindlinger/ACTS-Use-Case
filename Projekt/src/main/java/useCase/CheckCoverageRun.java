@@ -7,6 +7,8 @@ import useCase.suts.SUTObjectSimple;
 import util.CoverageCheckerModified;
 import edu.uta.cse.fireeye.service.exception.OperationServiceException;
 
+import javax.swing.*;
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -22,17 +24,17 @@ public class CheckCoverageRun {
 
             String fileName = "";
 
-            /*JFileChooser chooser = new JFileChooser();
+            JFileChooser chooser = new JFileChooser();
             File workingDirectory = new File(System.getProperty("user.dir"));
             chooser.setCurrentDirectory(workingDirectory);
 
             int returnVal = chooser.showOpenDialog(null);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 fileName = chooser.getSelectedFile().getAbsolutePath();
-            }*/
+            }
 
 
-            fileName = "output/ACTS_GUI_Export/t_" + i + ".csv";
+            //fileName = "output/ACTS_GUI_Export/t_" + i + ".csv";
 
             checkCoverage(interactionParameter, fileName);
 

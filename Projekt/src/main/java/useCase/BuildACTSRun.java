@@ -1,27 +1,14 @@
 package useCase;
 
-import edu.uta.cse.fireeye.common.*;
+import edu.uta.cse.fireeye.common.TestGenProfile;
 import edu.uta.cse.fireeye.common.TestGenProfile.ConstraintMode;
+import edu.uta.cse.fireeye.common.TestSet;
+import edu.uta.cse.fireeye.common.TestSetWrapper;
 import edu.uta.cse.fireeye.service.engine.IpoEngine;
 import useCase.suts.SUTObject;
 import useCase.suts.SUTObjectAbstract;
 import useCase.suts.SUTObjectComplex;
-import useCase.suts.SUTObjectSimple;
-import util.Tool;
 import util.Util;
-
-import java.util.function.DoubleToLongFunction;
-
-/**
- * This test class shows how to use the API interface of ACTS to
- * build a test set.
- */
-
-
-
-
-
-
 
 
 public class BuildACTSRun {
@@ -34,7 +21,7 @@ public class BuildACTSRun {
         System.out.println(acts.getSut());
 
 
-        //runACTS(acts, "output/Combinations_%s.csv");
+        runACTS(acts, "output/Combinations_%s.csv");
 
         //Util.addExpectedResults(outputString, Tool.ACTS);
 
