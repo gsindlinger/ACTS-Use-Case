@@ -13,7 +13,7 @@ The results of the various investigations can be taken in detail from the thesis
 - [PICT](https://github.com/microsoft/pict "PICT")
 - [CASA](http://cse.unl.edu/~citportal/ "CASA")
 
-<img src="https://github.com/gsindlinger/Combinatorial-Testing-Use-Case/blob/main/Arbeit/images/Algorithmen_%C3%9Cbersicht.jpg" width="200">
+<img src="https://github.com/gsindlinger/Combinatorial-Testing-Use-Case/blob/main/Arbeit/images/Algorithmen_%C3%9Cbersicht.jpg" width="500">
 
 
 ## Code information
