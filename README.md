@@ -13,6 +13,9 @@ The results of the various investigations can be taken in detail from the thesis
 - [PICT](https://github.com/microsoft/pict "PICT")
 - [CASA](http://cse.unl.edu/~citportal/ "CASA")
 
+![Image of tools & algorithms used](https://github.com/gsindlinger/Combinatorial-Testing-Use-Case/blob/main/Arbeit/images/Algorithmen_%C3%9Cbersicht.jpg)
+
+
 ## Code information
 
 The studies of the thesis were performed using Java mostly. The application of the command line based tools PICT and CASA was done via Java ProcessBuilder, the application of ACTS via GUI. The evaluation accuracy of the test data was determined using a customized API of the Java interface of ACTS. 
